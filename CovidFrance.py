@@ -7,20 +7,14 @@
 # Importation des librairies.
 import os
 import sys
-
-sys.path.insert(0, os.path.dirname(os.path.realpath(__file__)) + '/modules')
-
-from APIEngine import *
-from GraphEngine import *
-from MathsEngine import *
-from TwitterEngine import *
-from TimeEngine import *
-from ConfigEngine import *
+from modules.APIEngine import get_data
+from modules.GraphEngine import make_world_graph, make_local_graph, save_data_graph
+from modules.MathsEngine import percentage_calc, save_worldometers_data, save_gouv_data, calc_difference, check_data_change
+from modules.TwitterEngine import twitter_auth, get_last_tweet
+from modules.TimeEngine import check_time, get_days, datetime, log_time
+from modules.ConfigEngine import get_config, get_config_boolean
 
 api, auth = twitter_auth()  # API TWEEPY
-directory = os.path.join(os.path.dirname(__file__), '../config.ini')
-graphIMG = directory + "data/graphIMG.png"
-LogTime = "[" + datetime.now().strftime("%D %H:%M:%S") + "] "
 
 # ----------------------------------#
 
@@ -32,13 +26,13 @@ else:
 # ----------------------------------#
 
 if get_last_tweet() == 1:  # On vérifie que le bot n'a pas déjà posté aujourd'hui
-    print(LogTime + "Un tweet posté avec l'application [" + get_config('TwitterAPI',
+    print(log_time() + "Un tweet posté avec l'application [" + get_config('TwitterAPI',
                                                                        'app_name') + "] existe déjà pour aujourd'hui !")
     sys.exit()
 elif get_last_tweet() == 0:
-    print(LogTime + "Aucun tweet n'a été posté aujourd'hui, suite du programme...")
+    print(log_time() + "Aucun tweet n'a été posté aujourd'hui, suite du programme...")
 else:
-    print(LogTime + "Erreur.")
+    print(log_time() + "Erreur.")
     sys.exit()
 
 # ----------------------------------#
@@ -52,7 +46,7 @@ if gouvData != None:  # Si elles sont valides
     worldometersData = get_data(
         "WORLDOMETERS")  # Si c'est bon, on récupère les données de Worldometers (je l'ai mis ici pour éviter de spam l'api et de se faire ban-ip)
 else:
-    print(LogTime + "Aucune donnée pour aujourd'hui ! (Source: Gouvernement)\n")
+    print(log_time() + "Aucune donnée pour aujourd'hui ! (Source: Gouvernement)\n")
     sys.exit()
 
 # ----------------------------------#
@@ -112,25 +106,31 @@ print("\n----------------------------------------\n")
 # On sauvegarde toutes les données
 save_data_graph(gouvData['casConfirmes'], gouvData['casHopital'], gouvData['casReanimation'], gouvData['totalDeces'],
                 gouvData['casGueris'])
-print(LogTime + "Données du graphique mises à jours !")
+print(log_time() + "Données du graphique mises à jours !")
 
 save_gouv_data(gouvData)
-print(LogTime + "Données du gouvernement sauvegardées !")
+print(log_time() + "Données du gouvernement sauvegardées !")
 
 save_worldometers_data(worldometersData)
-print(LogTime + "Données de Worldometers sauvegardées !")
+print(log_time() + "Données de Worldometers sauvegardées !")
 
-make_graph()  # On génère le graphique
-print(LogTime + "Graphique généré !")
+make_local_graph()  # On génère le graphique
+print(log_time() + "Graphique pour la France généré !")
+
+make_world_graph()
+print(log_time() + "Graphique pour le monde généré !")
+
+img_packed = ('data/localGraph.png', 'data/worldGraph.png')
+media_tweet = [api.media_upload(i).media_id_string  for i in img_packed] 
+print(log_time() + "Préparation des images pour le tweet terminée !")
 
 # ----------------------------------#
 # On tweet
-tweet_post = api.update_status(first_tweet_form)
+posted_tweet = api.update_status(first_tweet_form)
 
-api.update_with_media(graphIMG, second_tweet_form, in_reply_to_status_id=tweet_post.id, retry_count=10, retry_delay=5,
-                      retry_errors={503})
+api.update_status(status = second_tweet_form,  media_ids = media_tweet, in_reply_to_status_id = posted_tweet.id, retry_count=10, retry_delay=5, retry_errors=set([503]))
 
 # On envoie le lien du tweet sur le compte privé du propriétaire
 api.send_direct_message(recipient_id=get_config('TwitterAPI', 'preview_id'),
                         text="https://twitter.com/" + get_config('TwitterAPI', 'account_name') + "/status/" + str(
-                            tweet_post.id))
+                            posted_tweet.id))
