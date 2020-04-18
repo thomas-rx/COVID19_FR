@@ -8,7 +8,7 @@
 import tweepy
 import datetime
 
-from ConfigEngine import *
+from modules.ConfigEngine import get_config
 
 todayDate = datetime.datetime.now().strftime("%Y-%m-%d")  # Date du jour
 # todayDate = dateSelected = '2020-04-10'
