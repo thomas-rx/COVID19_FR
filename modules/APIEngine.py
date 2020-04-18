@@ -1,128 +1,127 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-#Twitter: @xrths
-#www.xrths.fr
+# Twitter: @xrths
+# www.xrths.fr
 
-#Importation des librairies.
+# Importation des librairies.
 import requests
 import json
 import datetime
+
 from ConfigEngine import *
 
-dateSelected = datetime.datetime.now().strftime("%Y-%m-%d") #Date du jour pour parse le JSON
-directory = getConfig('System', 'directory')
+dateSelected = datetime.datetime.now().strftime("%Y-%m-%d")  # Date du jour pour parse le JSON
+directory = os.path.join(os.path.dirname(__file__), '../')
+
 
 #dateSelected = '2020-04-14' #Permet de sélectionner une date 'manuellement'
 
-def getData(source):
-	if source == "WORLDOMETERS":
-		WorldometersAPI = requests.get("https://coronavirus-19-api.herokuapp.com/countries/France")
-		WorldometersData = WorldometersAPI.json()
+def get_data(source):
+    if source == "WORLDOMETERS":
+        worldometers_api = requests.get("https://coronavirus-19-api.herokuapp.com/countries/France")
+        worldometers_data = worldometers_api.json()
 
-		'''
+        '''
 		print("\nDonnées de WORLDOMETERS:")
 		print(WorldometersData)
 		print("\n")
 		'''
 
-		with open(directory + 'data/todayWorldometersData.json', 'w') as data:
-			json.dump(WorldometersData, data)
+        with open(directory + 'data/todayWorldometersData.json', 'w') as data:
+            json.dump(worldometers_data, data)
 
-		return WorldometersData
+        return worldometers_data
 
-	elif source == "GOUVERNEMENT":
-		GouvData = requests.get("https://raw.githubusercontent.com/opencovid19-fr/data/master/dist/chiffres-cles.json")
-		GouvData = GouvData.json()
-		lineCount = len(GouvData)
+    elif source == "GOUVERNEMENT":
+        gouv_data = requests.get("https://raw.githubusercontent.com/opencovid19-fr/data/master/dist/chiffres-cles.json")
+        gouv_data = gouv_data.json()
+        line_count = len(gouv_data)
 
-		for i in range(lineCount):
-			if GouvData[i]['sourceType'] == "ministere-sante":
-				if GouvData[i]['date'] == dateSelected:
+        for i in range(line_count):
+            if gouv_data[i]['sourceType'] == "ministere-sante" and gouv_data[i]['date'] == dateSelected:
+                try:
+                    if int(get_config("CustomData", "casConfirmes")) > 0:
+                        cas_confirmes = int(get_config("CustomData", "casConfirmes"))
+                        print("[ATTENTION] Chiffres 'casConfirmes' modifiés manuellements")
+                except:
+                    cas_confirmes = gouv_data[i]['casConfirmes']
 
-					try:
-						if int(getConfig("CustomData", "casConfirmes")) > 0:
-							casConfirmes = int(getConfig("CustomData", "casConfirmes"))
-							print("[ATTENTION] Chiffres 'casConfirmes' modifiés manuellements")
-					except:
-						casConfirmes = GouvData[i]['casConfirmes']
+                try:
+                    if int(get_config("CustomData", "decesHopital")) > 0:
+                        deces_hopital = int(get_config("CustomData", "decesHopital"))
+                        print("[ATTENTION] Chiffres 'decesHopital' modifiés manuellements")
+                except:
+                    deces_hopital = gouv_data[i]['deces']
 
-					try:
-						if int(getConfig("CustomData", "decesHopital")) > 0:
-							decesHopital = int(getConfig("CustomData", "decesHopital"))
-							print("[ATTENTION] Chiffres 'decesHopital' modifiés manuellements")
-					except:
-						decesHopital = GouvData[i]['deces']
+                try:
+                    if int(get_config("CustomData", "decesEhpad")) > 0:
+                        deces_ehpad = int(get_config("CustomData", "decesEhpad"))
+                        print("[ATTENTION] Chiffres 'decesEhpad' modifiés manuellements")
+                except:
+                    deces_ehpad = gouv_data[i]['decesEhpad']
 
-					try:
-						if int(getConfig("CustomData", "decesEhpad")) > 0:
-							decesEhpad = int(getConfig("CustomData", "decesEhpad"))
-							print("[ATTENTION] Chiffres 'decesEhpad' modifiés manuellements")
-					except:
-						decesEhpad = GouvData[i]['decesEhpad']
+                try:
+                    if int(get_config("CustomData", "casReanimation")) > 0:
+                        cas_reanimation = int(get_config("CustomData", "casReanimation"))
+                        print("[ATTENTION] Chiffres 'casReanimation' modifiés manuellements")
+                except:
+                    cas_reanimation = gouv_data[i]['reanimation']
 
-					try:
-						if int(getConfig("CustomData", "casReanimation")) > 0:
-							casReanimation = int(getConfig("CustomData", "casReanimation"))
-							print("[ATTENTION] Chiffres 'casReanimation' modifiés manuellements")
-					except:
-						casReanimation = GouvData[i]['reanimation']
+                try:
+                    if int(get_config("CustomData", "casHopital")) > 0:
+                        cas_hopital = int(get_config("CustomData", "casHopital"))
+                        print("[ATTENTION] Chiffres 'casHopital' modifiés manuellements")
+                except:
+                    cas_hopital = gouv_data[i]['hospitalises']
 
+                try:
+                    if int(get_config("CustomData", "casGueris")) > 0:
+                        cas_gueris = int(get_config("CustomData", "casGueris"))
+                        print("[ATTENTION] Chiffres 'casGueris' modifiés manuellements")
+                except:
+                    cas_gueris = gouv_data[i]['gueris']
 
-					try:
-						if int(getConfig("CustomData", "casHopital")) > 0:
-							casHopital = int(getConfig("CustomData", "casHopital"))
-							print("[ATTENTION] Chiffres 'casHopital' modifiés manuellements")
-					except:
-						casHopital = GouvData[i]['hospitalises']
+                try:
+                    if (int(get_config("CustomData", "casEhpad")) > 0):
+                        cas_ehpad = int(get_config("CustomData", "casEhpad"))
+                        print("[ATTENTION] Chiffres 'casEhpad' modifiés manuellements")
+                except:
+                    cas_ehpad = gouv_data[i]['casEhpad']
 
-					try:
-						if int(getConfig("CustomData", "casGueris")) > 0:
-							casGueris = int(getConfig("CustomData", "casGueris"))
-							print("[ATTENTION] Chiffres 'casGueris' modifiés manuellements")
-					except:
-						casGueris = GouvData[i]['gueris']
+                try:
+                    if int(get_config("CustomData", "totalDeces")) > 0:
+                        total_deces = int(get_config("CustomData", "totalDeces"))
+                        print("[ATTENTION] Chiffres 'totalDeces' modifiés manuellements")
+                except:
+                    total_deces = deces_hopital + deces_ehpad
 
-					try:
-						if(int(getConfig("CustomData", "casEhpad")) > 0):
-							casEhpad = int(getConfig("CustomData", "casEhpad"))
-							print("[ATTENTION] Chiffres 'casEhpad' modifiés manuellements")
-					except:
-						casEhpad = GouvData[i]['casEhpad']
+                try:
+                    if int(get_config("CustomData", "casMalades")) > 0:
+                        cas_malades = int(get_config("CustomData", "casMalades"))
+                        print("[ATTENTION] Chiffres 'casMalades' modifiés manuellements")
+                except:
+                    cas_malades = cas_confirmes - (total_deces + cas_gueris)
 
-					try:
-						if int(getConfig("CustomData", "totalDeces")) > 0:
-							totalDeces = int(getConfig("CustomData", "totalDeces"))
-							print("[ATTENTION] Chiffres 'totalDeces' modifiés manuellements")
-					except:
-						totalDeces = decesHopital + decesEhpad
+                gouv_data = {
+                    'casConfirmes': cas_confirmes,
+                    'decesHopital': deces_hopital,
+                    'decesEhpad': deces_ehpad,
+                    'totalDeces': total_deces,
+                    'casReanimation': cas_reanimation,
+                    'casHopital': cas_hopital,
+                    'casGueris': cas_gueris,
+                    'casMalades': cas_malades,
+                    'casEhpad': cas_ehpad
+                }
 
-					try:
-						if int(getConfig("CustomData", "casMalades")) > 0:
-							casMalades = int(getConfig("CustomData", "casMalades"))
-							print("[ATTENTION] Chiffres 'casMalades' modifiés manuellements")
-					except:
-						casMalades = casConfirmes - (totalDeces + casGueris)
+                '''
+                print("Données du GOUVERNEMENT:")
+                print(gouvData)
+                print("\n")
+                '''
 
-					gouvData = {
-					    'casConfirmes': casConfirmes,
-					    'decesHopital': decesHopital,
-					    'decesEhpad': decesEhpad,
-					    'totalDeces': totalDeces,
-					    'casReanimation': casReanimation,
-					    'casHopital': casHopital,
-					    'casGueris': casGueris,
-					    'casMalades': casMalades,
-						'casEhpad': casEhpad
-					}
+                with open(directory + 'data/todayGouvData.json', 'w') as data:
+                    json.dump(gouv_data, data)
 
-					'''
-					print("Données du GOUVERNEMENT:")
-					print(gouvData)
-					print("\n")
-					'''
-
-					with open(directory + 'data/todayGouvData.json', 'w') as data:
-						json.dump(gouvData, data)
-
-					return gouvData
+                return gouv_data

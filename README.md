@@ -14,17 +14,16 @@
   <a href="https://www.python.org/">
     <img src="http://ForTheBadge.com/images/badges/made-with-python.svg" alt="tweepy">
   </a>
-  
-<p align="center">
-  <a href="https://badge.fury.io/py/tweepy">
-    <img src="https://badge.fury.io/py/tweepy.svg" alt="tweepy">
-  <a href="https://badge.fury.io/py/requests">
-    <img src="https://badge.fury.io/py/requests.svg" alt="requests"> 
-  <a href="https://badge.fury.io/py/matplotlib">
-    <img src="https://badge.fury.io/py/matplotlib.svg" alt="matplotlib"> 
-  <a href="https://badge.fury.io/py/numpy">
-    <img src="https://badge.fury.io/py/numpy.svg" alt="numpy"> 
-</a>
+</p>
+
+<div align="center">
+
+  [![Tweepy](https://img.shields.io/badge/tweepy-3.8.0-blue.svg)](https://pypi.org/project/tweepy/)
+  [![Requests](https://img.shields.io/badge/requests-2.23.0-blue.svg)](https://pypi.org/project/requests/)
+  [![Matplotlib](https://img.shields.io/badge/matplotlib-2.2.5-blue.svg)](https://pypi.org/project/matplotlib/)
+  [![Numpy](https://img.shields.io/badge/numpy-1.16.6-blue.svg)](https://pypi.org/project/numpy/)
+
+</div>
     
 <p align="center">
   <a href="#données">Données</a> |
