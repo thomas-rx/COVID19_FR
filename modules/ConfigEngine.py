@@ -10,4 +10,4 @@ from configparser import SafeConfigParser
 def getConfig(section, option):
 	parser = SafeConfigParser()
 	parser.read('/VotreDirectory/COVID19-France/' + 'config.ini') #Modifier cette ligne.
-	return(parser.get(section, option))
+	return parser.get(section, option)

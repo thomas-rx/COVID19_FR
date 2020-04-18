@@ -26,7 +26,7 @@ def checkDataChange():
 
 	with open(directory + 'data/oldGouvData.json') as oldData:
 		data = json.load(oldData)
-		if (data['casConfirmes'] != casConfirmes):
+		if data['casConfirmes'] != casConfirmes:
 			print("[INFO] Vérification: chiffres modifiés !")
 		else:
 			print("[ATTENTION] Aucun changement n'a été détecté dans les chiffres.")
@@ -90,88 +90,88 @@ def CalcDifference():
 	diff_totalTests = totalTests - old_totalTests
 	diff_todayCases = todayCases
 
-	if (diff_casConfirmes > 0):
+	if diff_casConfirmes > 0:
 	    diff_casConfirmes = "+" + str(diff_casConfirmes)
-	elif(diff_casConfirmes == 0):
+	elif diff_casConfirmes == 0:
 	    diff_casConfirmes = "N/A"
-	elif(diff_casConfirmes < 0):
+	elif diff_casConfirmes < 0:
 	    diff_casConfirmes = "" + str(diff_casConfirmes)
 
-	if (diff_decesHopital > 0):
+	if diff_decesHopital > 0:
 	    diff_decesHopital = "+" + str(diff_decesHopital)
-	elif(diff_decesHopital == 0):
+	elif diff_decesHopital == 0:
 	    diff_decesHopital = "N/A"
-	elif(diff_decesHopital < 0):
+	elif diff_decesHopital < 0:
 	    diff_decesHopital = "" + str(diff_decesHopital)
 
-	if (diff_decesEhpad > 0):
+	if diff_decesEhpad > 0:
 	    diff_decesEhpad = "+" + str(diff_decesEhpad)
-	elif(diff_decesEhpad == 0):
+	elif diff_decesEhpad == 0:
 	    diff_decesEhpad = "N/A"
-	elif(diff_decesEhpad < 0):
+	elif diff_decesEhpad < 0:
 	    diff_decesEhpad = "" + str(diff_decesEhpad)
 
-	if (diff_totalDeces > 0):
+	if diff_totalDeces > 0:
 	    diff_totalDeces = "+" + str(diff_totalDeces)
-	elif(diff_totalDeces == 0):
+	elif diff_totalDeces == 0:
 	    diff_totalDeces = "N/A"
-	elif(diff_totalDeces < 0):
+	elif diff_totalDeces < 0:
 	    diff_totalDeces = "" + str(diff_totalDeces)
 
-	if (diff_casReanimation > 0):
+	if diff_casReanimation > 0:
 	    diff_casReanimation = "+" + str(diff_casReanimation)
-	elif(diff_casReanimation == 0):
+	elif diff_casReanimation == 0:
 	    diff_casReanimation = "N/A"
-	elif(diff_casReanimation < 0):
+	elif diff_casReanimation < 0:
 	    diff_casReanimation = "" + str(diff_casReanimation)
 
-	if (diff_casHopital > 0):
+	if diff_casHopital > 0:
 	    diff_casHopital = "+" + str(diff_casHopital)
-	elif(diff_casHopital == 0):
+	elif diff_casHopital == 0:
 	    diff_casHopital = "N/A"
-	elif(diff_casHopital < 0):
+	elif diff_casHopital < 0:
 	    diff_casHopital = "" + str(diff_casHopital)
 
-	if (diff_casGueris > 0):
+	if diff_casGueris > 0:
 	    diff_casGueris = "+" + str(diff_casGueris)
-	elif(diff_casGueris == 0):
+	elif diff_casGueris == 0:
 	    diff_casGueris = "N/A"
-	elif(diff_casGueris < 0):
+	elif diff_casGueris < 0:
 	    diff_casGueris = "" + str(diff_casGueris)
 
-	if (diff_casMalades > 0):
+	if diff_casMalades > 0:
 	    diff_casMalades = "+" + str(diff_casMalades)
-	elif(diff_casMalades == 0):
+	elif diff_casMalades == 0:
 	    diff_casMalades = "N/A"
-	elif(diff_casMalades < 0):
+	elif diff_casMalades < 0:
 	    diff_casMalades = "" + str(diff_casMalades)
 
-	if (diff_activeCases > 0):
+	if diff_activeCases > 0:
 	    diff_activeCases = "+" + str(diff_activeCases)
-	elif(diff_activeCases == 0):
+	elif diff_activeCases == 0:
 	    diff_activeCases = "N/A"
-	elif(diff_activeCases < 0):
+	elif diff_activeCases < 0:
 	    diff_activeCases = "" + str(diff_activeCases)
 
-	if (diff_totalTests > 0):
+	if diff_totalTests > 0:
 	    diff_totalTests = "+" + str(diff_totalTests)
-	elif(diff_totalTests == 0):
+	elif diff_totalTests == 0:
 	    diff_totalTests = ""
-	elif(diff_totalTests < 0):
+	elif diff_totalTests < 0:
 	    diff_totalTests = "" + str(diff_totalTests)
 
-	if (diff_todayCases > 0):
+	if diff_todayCases > 0:
 	    diff_todayCases = "+" + str(diff_todayCases)
-	elif(diff_todayCases == 0):
+	elif diff_todayCases == 0:
 	    diff_todayCases = "N/A"
-	elif(diff_todayCases < 0):
+	elif diff_todayCases < 0:
 	    diff_todayCases = "" + str(diff_todayCases)
 
-	if (diff_casEhpad > 0):
+	if diff_casEhpad > 0:
 	    diff_casEhpad = "+" + str(diff_casEhpad)
-	elif(diff_casEhpad == 0):
+	elif diff_casEhpad == 0:
 	    diff_casEhpad = "N/A"
-	elif(diff_casEhpad < 0):
+	elif diff_casEhpad < 0:
 	    diff_casEhpad = "" + str(diff_casEhpad)
 
 	diffData = {
@@ -211,7 +211,7 @@ def percentageCalc():
 		    'totalDeces': totalDeces
 		}
 
-	return (percentData)
+	return percentData
 
 def saveGouvData(data):
 	with open(directory + 'data/oldGouvData.json', 'w') as fp:
