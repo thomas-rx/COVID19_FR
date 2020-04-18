@@ -62,36 +62,39 @@ percentage_data = percentage_calc()  # On récupère les pourcentages
 
 print("\n----------------------------------------\n")
 
+def format_data(data):
+    return str("{0:,}".format(data))
+
 # ----------------------------------#
 
 # On met en forme les deux tweets
 first_tweet_form = str("‪La 🇫🇷 est confinée depuis:"
                        + "\n" + get_days() + " jours"
                        + "\n"
-                       + "\n" + "🟩 " + str("{0:,}".format(gouvData['casGueris'])) + " guéris " + percentage_data[
+                       + "\n" + "🟩 " + format_data(gouvData['casGueris']) + " guéris " + percentage_data[
                            'casGueris'] + " " + difference_data['casGueris']
-                       + "\n" + "🟧 " + str("{0:,}".format(gouvData['casMalades'])) + " malades " + difference_data[
+                       + "\n" + "🟧 " + format_data(gouvData['casMalades']) + " malades " + difference_data[
                            'casMalades_GOUV']
-                       + "\n" + "🟥 " + "dont " + str("{0:,}".format(gouvData['casReanimation'])) + " cas graves " +
+                       + "\n" + "🟥 " + "dont " + format_data(gouvData['casReanimation']) + " cas graves " +
                        difference_data['casReanimation']
-                       + "\n" + "⬛ " + str("{0:,}".format(gouvData['totalDeces'])) + " morts " + percentage_data[
+                       + "\n" + "⬛ " + format_data(gouvData['totalDeces']) + " morts " + percentage_data[
                            'totalDeces'] + " " + difference_data['totalDeces']
                        + "\n"
-                       + "\n" + "‪◾️ " + str("{0:,}".format(gouvData['decesHopital'])) + " en hôpitaux " +
+                       + "\n" + "‪◾️ " + format_data(gouvData['decesHopital']) + " en hôpitaux " +
                        difference_data['decesHopital']
-                       + "\n" + "‪◾️ " + str("{0:,}".format(gouvData['decesEhpad'])) + " en ESMS " + difference_data[
+                       + "\n" + "‪◾️ " + format_data(gouvData['decesEhpad']) + " en ESMS " + difference_data[
                            'decesEhpad']
                        + "\n"
-                       + "\n" + "‪ 🦠 — " + str("{0:,}".format(gouvData['casConfirmes'])) + " cas " + difference_data[
+                       + "\n" + "‪ 🦠 — " + format_data(gouvData['casConfirmes']) + " cas " + difference_data[
                            'casConfirmes']
                        + "\n"
                        + "\n" + "‪Graphique 📈 — ⬇️‬ "
                        + "\n" + "#ConfinementJour" + get_days() + " | #COVID19")
 
 second_tweet_form = str(
-    "🏠 " + str("{0:,}".format(gouvData['casEhpad'])) + " cas en EHPAD" + " " + difference_data['casEhpad']
-    + "\n" + "🛏 " + str("{0:,}".format(gouvData['casHopital'])) + " hospitalisés" + " " + difference_data['casHopital']
-    + "\n" + "🔬 " + str("{0:,}".format(worldometersData['totalTests'])) + " dépistages"
+    "🏠 " + format_data(gouvData['casEhpad']) + " cas en EHPAD" + " " + difference_data['casEhpad']
+    + "\n" + "🛏 " + format_data(gouvData['casHopital']) + " hospitalisés" + " " + difference_data['casHopital']
+    + "\n" + "🔬 " + format_data(worldometersData['totalTests']) + " dépistages"
     + "‪\n" + ""
     + "‪\n" + "📈 Évolution #graphique du #COVID19 en #France‬")
 
