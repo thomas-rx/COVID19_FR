@@ -6,8 +6,9 @@
 
 # Importation des librairies.
 import json
-
-from ConfigEngine import *
+import os
+import sys
+from modules.ConfigEngine import get_config
 
 directory = os.path.join(os.path.dirname(__file__), '../')
 
@@ -38,7 +39,7 @@ def check_data_change():
             print("[INFO] Vérification: chiffres modifiés !")
         else:
             print("[ATTENTION] Aucun changement n'a été détecté dans les chiffres.")
-        # sys.exit()
+            sys.exit()
 
 
 def calc_difference():
