@@ -8,12 +8,11 @@
 import requests
 import json
 import datetime
-
-from ConfigEngine import *
+import os
+from modules.ConfigEngine import get_config
 
 dateSelected = datetime.datetime.now().strftime("%Y-%m-%d")  # Date du jour pour parse le JSON
 directory = os.path.join(os.path.dirname(__file__), '../')
-
 
 #dateSelected = '2020-04-14' #Permet de sélectionner une date 'manuellement'
 
