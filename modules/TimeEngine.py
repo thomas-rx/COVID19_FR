@@ -1,38 +1,37 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-#Twitter: @xrths
-#www.xrths.fr
+# Twitter: @xrths
+# www.xrths.fr
 
-#Importation des librairies.
+# Importation des librairies.
 from datetime import datetime
 from ConfigEngine import *
 
-def getDays():
-	containmentDate = datetime(2020, 3, 17) #Confinement
-	todayDate = datetime.today()
 
-	numberOfDays = str(todayDate - containmentDate)
-	numberOfDays = str([int(s) for s in numberOfDays.split() if s.isdigit()])
-	numberOfDays = numberOfDays.replace('[', '')
-	numberOfDays = numberOfDays.replace(']', '')
-	numberOfDays = int(numberOfDays) + 1 #Le confinement a débuté à midi.
+def get_days():
+    containment_date = datetime(2020, 3, 17)  # Confinement
+    today_date = datetime.today()
 
-	return(str(numberOfDays))
+    number_of_days = str(today_date - containment_date)
+    number_of_days = str([int(s) for s in number_of_days.split() if s.isdigit()])
+    number_of_days = number_of_days.replace('[', '')
+    number_of_days = number_of_days.replace(']', '')
+    number_of_days = int(number_of_days) + 1  # Le confinement a débuté à midi.
 
-def checkTime():
-	if getConfig('System', 'checkTime') == 'True':
-		getTimeNow = datetime.now().strftime("%H:%M")
+    return str(number_of_days)
 
-		startTime = datetime.strptime(getConfig('System', 'startTime'), '%H:%M')
-		startTime = startTime.strftime('%H:%M')
 
-		endTime = datetime.strptime(getConfig('System', 'endTime'), '%H:%M')
-		endTime = endTime.strftime('%H:%M')
+def check_time():
+    if get_config_boolean('System', 'checkTime'):
+        get_time_now = datetime.now().strftime("%H:%M")
 
-		if(getTimeNow > startTime and getTimeNow < endTime):
-			return True
-		else:
-			return False
-	else:
-		return True
+        start_time = datetime.strptime(get_config('System', 'startTime'), '%H:%M')
+        start_time = start_time.strftime('%H:%M')
+
+        end_time = datetime.strptime(get_config('System', 'endTime'), '%H:%M')
+        end_time = end_time.strftime('%H:%M')
+
+        return start_time < get_time_now < end_time
+    else:
+        return True
