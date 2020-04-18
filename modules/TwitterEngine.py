@@ -5,9 +5,11 @@
 #www.xrths.fr
 
 #Importation des librairies.
+from datetime import datetime
+
 import tweepy
-import datetime
-from ConfigEngine import * 
+
+from modules.ConfigEngine import getConfig
 
 todayDate = datetime.datetime.now().strftime("%Y-%m-%d") #Date du jour
 #todayDate = dateSelected = '2020-04-10'
@@ -20,7 +22,7 @@ access_token_secret = getConfig('TwitterAPI', 'access_token_secret')
 
 
 def TwitterAuth():
-	
+
     auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
     auth.set_access_token(access_token, access_token_secret)
 
@@ -36,4 +38,4 @@ def getLastTweet():
 	if(todayDate == lastTweetDate and lastTweet.source == getConfig('TwitterAPI', 'app_name')):
    		return 1 #Déjà tweeté
 	else:
-   		return 0 #On va chercher les données 
+   		return 0 #On va chercher les données

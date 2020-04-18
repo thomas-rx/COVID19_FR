@@ -6,7 +6,9 @@
 
 #Importation des librairies.
 from datetime import datetime
-from ConfigEngine import *
+
+from modules.ConfigEngine import getConfig
+
 
 def getDays():
 	containmentDate = datetime(2020, 3, 17) #Confinement

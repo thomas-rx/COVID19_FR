@@ -6,8 +6,8 @@
 
 #Importation des librairies.
 import json
-import sys
-from ConfigEngine import * 
+
+from modules.ConfigEngine import getConfig
 
 directory = getConfig('System', 'directory')
 

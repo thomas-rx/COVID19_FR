@@ -6,14 +6,20 @@
 
 #Importation des librairies.
 import matplotlib
+
+from modules.ConfigEngine import getConfig
+# Importation des librairies.
+import matplotlib
+
+from modules.ConfigEngine import getConfig
+
 matplotlib.matplotlib_fname()
 '/etc/matplotlibrc'
 matplotlib.use('Agg')
 import csv
 import matplotlib.pyplot as plt
-import numpy as np
 import datetime
-from ConfigEngine import *
+
 
 directory = getConfig('System', 'directory')
 
@@ -40,7 +46,7 @@ def makeGraph():
 	plt.style.use('seaborn-talk')
 
 	#plt.plot(totalCases, label=u'Cas totaux confirmés', marker='o',color = 'darkorange', linewidth = 4)
-	
+
 	plt.plot(sickCases, label=u'Population activement malade',  marker='o', color = 'darkorange', linewidth = 4)
 
 	plt.plot(hospitalizationCases, label=u'Population activement hospitalisée', marker='o',color = 'indianred', linewidth = 4)

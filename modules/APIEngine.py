@@ -8,7 +8,8 @@
 import requests
 import json
 import datetime
-from ConfigEngine import * 
+
+from modules.ConfigEngine import getConfig
 
 dateSelected = datetime.datetime.now().strftime("%Y-%m-%d") #Date du jour pour parse le JSON
 directory = getConfig('System', 'directory')

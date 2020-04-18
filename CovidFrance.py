@@ -5,17 +5,14 @@
 #www.xrths.fr
 
 #Importation des librairies.
-import os
 import sys
 
-sys.path.insert(0, os.path.dirname(os.path.realpath(__file__)) + '/modules') #Pour importer les fichiers du dossier modules
-
-from APIEngine import *
-from GraphEngine import *
-from MathsEngine import * 
-from TwitterEngine import *
-from TimeEngine import *
-from ConfigEngine import *
+from modules.TwitterEngine import *
+from modules.APIEngine import *
+from modules.GraphEngine import *
+from modules.MathsEngine import *
+from modules.TimeEngine import *
+from modules.ConfigEngine import *
 
 api, auth = TwitterAuth() #API TWEEPY
 directory = getConfig('System', 'directory')
