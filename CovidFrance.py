@@ -12,7 +12,7 @@ sys.path.insert(0, os.path.dirname(os.path.realpath(__file__)) + '/modules') #Po
 
 from APIEngine import *
 from GraphEngine import *
-from MathsEngine import * 
+from MathsEngine import *
 from TwitterEngine import *
 from TimeEngine import *
 from ConfigEngine import *
@@ -24,17 +24,17 @@ LogTime = "[" + datetime.now().strftime("%D %H:%M:%S") + "] "
 
 #----------------------------------#
 
-if(checkTime() == True): #On vérifie le créneau horaire si activé dans le fichier config.ini
+if checkTime() == True: #On vérifie le créneau horaire si activé dans le fichier config.ini
 	pass
 else:
 	sys.exit()
 
 #----------------------------------#
 
-if(getLastTweet() == 1): #On vérifie que le bot n'a pas déjà posté aujourd'hui
+if getLastTweet() == 1: #On vérifie que le bot n'a pas déjà posté aujourd'hui
 	print(LogTime + "Un tweet posté avec l'application [" + getConfig('TwitterAPI', 'app_name') + "] existe déjà pour aujourd'hui !")
 	sys.exit()
-elif(getLastTweet() == 0):
+elif getLastTweet() == 0:
 	print(LogTime + "Aucun tweet n'a été posté aujourd'hui, suite du programme...")
 else:
 	print(LogTime + "Erreur.")
@@ -46,7 +46,7 @@ gouvData = getData("GOUVERNEMENT") #On récupère les données du gouvernement
 
 #----------------------------------#
 
-if(gouvData !=  None): #Si elles sont valides
+if gouvData !=  None: #Si elles sont valides
 	checkDataChange() #On vérifie quelles sont un minimum cohérentes
 	worldometersData = getData("WORLDOMETERS") #Si c'est bon, on récupère les données de Worldometers (je l'ai mis ici pour éviter de spam l'api et de se faire ban-ip)
 else:
@@ -64,7 +64,7 @@ print("\n----------------------------------------\n")
 
 #On met en forme les deux tweets
 firstTweetForm = str("‪La 🇫🇷 est confinée depuis:"
-		+ "\n" + getDays() + " jours" 
+		+ "\n" + getDays() + " jours"
 		+ "\n"
 		+ "\n" + "🟩 " + str("{0:,}".format(gouvData['casGueris'])) + " guéris " + percentageData['casGueris'] + " " + DiffData['casGueris']
 		+ "\n" + "🟧 " + str("{0:,}".format(gouvData['casMalades'])) + " malades " + DiffData['casMalades_GOUV']
@@ -72,7 +72,7 @@ firstTweetForm = str("‪La 🇫🇷 est confinée depuis:"
 		+ "\n" + "⬛ " 	+ str("{0:,}".format(gouvData['totalDeces'])) + " morts " + percentageData['totalDeces'] + " " + DiffData['totalDeces']
 		+ "\n"
 		+ "\n" + "‪◾️ " + str("{0:,}".format(gouvData['decesHopital'])) + " en hôpitaux " + DiffData['decesHopital']
-		+ "\n" + "‪◾️ " + str("{0:,}".format(gouvData['decesEhpad'])) + " en ESMS " + DiffData['decesEhpad'] 
+		+ "\n" + "‪◾️ " + str("{0:,}".format(gouvData['decesEhpad'])) + " en ESMS " + DiffData['decesEhpad']
 		+ "\n"
 		+ "\n" + "‪ 🦠 — " + str("{0:,}".format(gouvData['casConfirmes'])) + " cas " + DiffData['casConfirmes']
 		+ "\n"
@@ -81,7 +81,7 @@ firstTweetForm = str("‪La 🇫🇷 est confinée depuis:"
 
 secondTweetForm = str("🏠 " + str("{0:,}".format(gouvData['casEhpad'])) + " cas en EHPAD" + " " + DiffData['casEhpad']
 		+ "\n" + "🛏 " + str("{0:,}".format(gouvData['casHopital'])) + " hospitalisés" + " " + DiffData['casHopital']
-		+ "\n" + "🔬 " + str("{0:,}".format(worldometersData['totalTests'])) + " dépistages" 
+		+ "\n" + "🔬 " + str("{0:,}".format(worldometersData['totalTests'])) + " dépistages"
 		+ "‪\n" + ""
 		+ "‪\n" + "📈 Évolution #graphique du #COVID19 en #France‬")
 
@@ -92,8 +92,8 @@ print(secondTweetForm)
 print("\n----------------------------------------\n")
 
 #input("\n----------------------------------------\nPressez ENTRER pour valider le tweet [...]") #Décommenter pour utiliser le bot manuellement
- 
-#----------------------------------# 
+
+#----------------------------------#
 #On sauvegarde toutes les données
 saveDataGraph(gouvData['casConfirmes'], gouvData['casHopital'], gouvData['casReanimation'], gouvData['totalDeces'], gouvData['casGueris'])
 print(LogTime + "Données du graphique mises à jours !")
@@ -109,7 +109,7 @@ print(LogTime + "Graphique généré !")
 
 #----------------------------------#
 #On tweet
-TweetPost = api.update_status(firstTweetForm) 
+TweetPost = api.update_status(firstTweetForm)
 
 api.update_with_media(graphIMG, secondTweetForm, in_reply_to_status_id = TweetPost.id, retry_count=10, retry_delay=5, retry_errors=set([503]))
 

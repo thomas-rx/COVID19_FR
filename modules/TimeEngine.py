@@ -21,7 +21,7 @@ def getDays():
 	return(str(numberOfDays))
 
 def checkTime():
-	if(getConfig('System', 'checkTime') == 'True'):
+	if getConfig('System', 'checkTime') == 'True':
 		getTimeNow = datetime.now().strftime("%H:%M")
 
 		startTime = datetime.strptime(getConfig('System', 'startTime'), '%H:%M')
@@ -30,9 +30,9 @@ def checkTime():
 		endTime = datetime.strptime(getConfig('System', 'endTime'), '%H:%M')
 		endTime = endTime.strftime('%H:%M')
 
-		if(getTimeNow > startTime and getTimeNow < endTime): 
-			return(True) 
+		if(getTimeNow > startTime and getTimeNow < endTime):
+			return True
 		else:
-			return(False)
+			return False
 	else:
-		return(True)
+		return True
