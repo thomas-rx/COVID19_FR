@@ -62,8 +62,10 @@ percentage_data = percentage_calc()  # On récupère les pourcentages
 
 print("\n----------------------------------------\n")
 
+
 def format_data(data):
     return str("{0:,}".format(data))
+
 
 # ----------------------------------#
 
