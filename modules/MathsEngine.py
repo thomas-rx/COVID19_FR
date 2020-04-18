@@ -11,6 +11,13 @@ from ConfigEngine import *
 
 directory = os.path.join(os.path.dirname(__file__), '../')
 
+def put_sign(var):
+	if var > 0:
+		return '+' + str(var)
+	elif var == 0:
+		return 'N/A'
+	else:
+		return str(var)
 
 def check_data_change():
     with open(directory + 'data/todayGouvData.json') as today_data:
@@ -92,89 +99,18 @@ def calc_difference():
     diff_total_tests = totalTests - old_totalTests
     diff_today_cases = todayCases
 
-    if diff_cas_confirmes > 0:
-        diff_cas_confirmes = "+" + str(diff_cas_confirmes)
-    elif diff_cas_confirmes == 0:
-        diff_cas_confirmes = "N/A"
-    elif diff_cas_confirmes < 0:
-        diff_cas_confirmes = "" + str(diff_cas_confirmes)
-
-    if diff_deces_hopital > 0:
-        diff_deces_hopital = "+" + str(diff_deces_hopital)
-    elif diff_deces_hopital == 0:
-        diff_deces_hopital = "N/A"
-    elif diff_deces_hopital < 0:
-        diff_deces_hopital = "" + str(diff_deces_hopital)
-
-    if diff_deces_ehpad > 0:
-        diff_deces_ehpad = "+" + str(diff_deces_ehpad)
-    elif diff_deces_ehpad == 0:
-        diff_deces_ehpad = "N/A"
-    elif diff_deces_ehpad < 0:
-        diff_deces_ehpad = "" + str(diff_deces_ehpad)
-
-    if diff_total_deces > 0:
-        diff_total_deces = "+" + str(diff_total_deces)
-    elif diff_total_deces == 0:
-        diff_total_deces = "N/A"
-    elif diff_total_deces < 0:
-        diff_total_deces = "" + str(diff_total_deces)
-
-    if diff_cas_reanimation > 0:
-        diff_cas_reanimation = "+" + str(diff_cas_reanimation)
-    elif diff_cas_reanimation == 0:
-        diff_cas_reanimation = "N/A"
-    elif diff_cas_reanimation < 0:
-        diff_cas_reanimation = "" + str(diff_cas_reanimation)
-
-    if diff_cas_hopital > 0:
-        diff_cas_hopital = "+" + str(diff_cas_hopital)
-    elif diff_cas_hopital == 0:
-        diff_cas_hopital = "N/A"
-    elif diff_cas_hopital < 0:
-        diff_cas_hopital = "" + str(diff_cas_hopital)
-
-    if diff_cas_gueris > 0:
-        diff_cas_gueris = "+" + str(diff_cas_gueris)
-    elif diff_cas_gueris == 0:
-        diff_cas_gueris = "N/A"
-    elif diff_cas_gueris < 0:
-        diff_cas_gueris = "" + str(diff_cas_gueris)
-
-    if diff_cas_malades > 0:
-        diff_cas_malades = "+" + str(diff_cas_malades)
-    elif diff_cas_malades == 0:
-        diff_cas_malades = "N/A"
-    elif diff_cas_malades < 0:
-        diff_cas_malades = "" + str(diff_cas_malades)
-
-    if diff_active_cases > 0:
-        diff_active_cases = "+" + str(diff_active_cases)
-    elif diff_active_cases == 0:
-        diff_active_cases = "N/A"
-    elif diff_active_cases < 0:
-        diff_active_cases = "" + str(diff_active_cases)
-
-    if diff_total_tests > 0:
-        diff_total_tests = "+" + str(diff_total_tests)
-    elif diff_total_tests == 0:
-        diff_total_tests = ""
-    elif diff_total_tests < 0:
-        diff_total_tests = "" + str(diff_total_tests)
-
-    if diff_today_cases > 0:
-        diff_today_cases = "+" + str(diff_today_cases)
-    elif diff_today_cases == 0:
-        diff_today_cases = "N/A"
-    elif diff_today_cases < 0:
-        diff_today_cases = "" + str(diff_today_cases)
-
-    if diff_cas_ehpad > 0:
-        diff_cas_ehpad = "+" + str(diff_cas_ehpad)
-    elif diff_cas_ehpad == 0:
-        diff_cas_ehpad = "N/A"
-    elif diff_cas_ehpad < 0:
-        diff_cas_ehpad = "" + str(diff_cas_ehpad)
+    diff_cas_confirmes = put_sign(diff_cas_confirmes)
+    diff_deces_hopital = put_sign(diff_deces_hopital)
+    diff_deces_ehpad = put_sign(diff_deces_ehpad)
+    diff_total_deces = put_sign(diff_total_deces)
+    diff_cas_reanimation = put_sign(diff_cas_reanimation)
+    diff_cas_hopital = put_sign(diff_cas_hopital)
+    diff_cas_gueris = put_sign(diff_cas_gueris)
+    diff_cas_malades = put_sign(diff_cas_malades)
+    diff_active_cases = put_sign(diff_active_cases)
+    diff_total_tests = put_sign(diff_total_tests)
+    diff_today_cases = put_sign(diff_today_cases)
+    diff_cas_ehpad = put_sign(diff_cas_ehpad)
 
     diff_data = {
         'casConfirmes': diff_cas_confirmes,
