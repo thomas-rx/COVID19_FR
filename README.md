@@ -85,12 +85,6 @@ $ cd COVID19-France/
 $ pip install -r requirements.txt
 ```
 
-    Voir la configuration de "config.ini".
-```bash
-# Modifier ./modules/ConfigEngine.py
-parser.read('/VotreDirectory/COVID19-France/'  +  'config.ini')  #Modifier cette ligne
-```
-
 ```bash
 $ python3 CovidFrance.py
 ```
