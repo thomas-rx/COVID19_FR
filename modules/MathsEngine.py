@@ -11,6 +11,14 @@ from ConfigEngine import *
 
 directory = getConfig('System', 'directory')
 
+def putSign(var):
+	if var > 0:
+		return '+' + str(var)
+	elif var == 0:
+		return 'N/A'
+	else:
+		return str(var)
+
 def checkDataChange():
 	with open(directory + 'data/todayGouvData.json') as todayData:
 		data = json.load(todayData)
@@ -90,89 +98,29 @@ def CalcDifference():
 	diff_totalTests = totalTests - old_totalTests
 	diff_todayCases = todayCases
 
-	if diff_casConfirmes > 0:
-	    diff_casConfirmes = "+" + str(diff_casConfirmes)
-	elif diff_casConfirmes == 0:
-	    diff_casConfirmes = "N/A"
-	elif diff_casConfirmes < 0:
-	    diff_casConfirmes = "" + str(diff_casConfirmes)
+	diff_casConfirmes = putSign(diff_casConfirmes)
 
-	if diff_decesHopital > 0:
-	    diff_decesHopital = "+" + str(diff_decesHopital)
-	elif diff_decesHopital == 0:
-	    diff_decesHopital = "N/A"
-	elif diff_decesHopital < 0:
-	    diff_decesHopital = "" + str(diff_decesHopital)
+	diff_decesHopital = putSign(diff_decesHopital)
 
-	if diff_decesEhpad > 0:
-	    diff_decesEhpad = "+" + str(diff_decesEhpad)
-	elif diff_decesEhpad == 0:
-	    diff_decesEhpad = "N/A"
-	elif diff_decesEhpad < 0:
-	    diff_decesEhpad = "" + str(diff_decesEhpad)
+	diff_decesEhpad = putSign(diff_decesEhpad)
 
-	if diff_totalDeces > 0:
-	    diff_totalDeces = "+" + str(diff_totalDeces)
-	elif diff_totalDeces == 0:
-	    diff_totalDeces = "N/A"
-	elif diff_totalDeces < 0:
-	    diff_totalDeces = "" + str(diff_totalDeces)
+	diff_totalDeces = putSign(diff_totalDeces)
 
-	if diff_casReanimation > 0:
-	    diff_casReanimation = "+" + str(diff_casReanimation)
-	elif diff_casReanimation == 0:
-	    diff_casReanimation = "N/A"
-	elif diff_casReanimation < 0:
-	    diff_casReanimation = "" + str(diff_casReanimation)
+	diff_casReanimation = putSign(diff_casReanimation)
 
-	if diff_casHopital > 0:
-	    diff_casHopital = "+" + str(diff_casHopital)
-	elif diff_casHopital == 0:
-	    diff_casHopital = "N/A"
-	elif diff_casHopital < 0:
-	    diff_casHopital = "" + str(diff_casHopital)
+	diff_casHopital = putSign(diff_casHopital)
 
-	if diff_casGueris > 0:
-	    diff_casGueris = "+" + str(diff_casGueris)
-	elif diff_casGueris == 0:
-	    diff_casGueris = "N/A"
-	elif diff_casGueris < 0:
-	    diff_casGueris = "" + str(diff_casGueris)
+	diff_casGueris = putSign(diff_casGueris)
 
-	if diff_casMalades > 0:
-	    diff_casMalades = "+" + str(diff_casMalades)
-	elif diff_casMalades == 0:
-	    diff_casMalades = "N/A"
-	elif diff_casMalades < 0:
-	    diff_casMalades = "" + str(diff_casMalades)
+	diff_casMalades = putSign(diff_casMalades)
 
-	if diff_activeCases > 0:
-	    diff_activeCases = "+" + str(diff_activeCases)
-	elif diff_activeCases == 0:
-	    diff_activeCases = "N/A"
-	elif diff_activeCases < 0:
-	    diff_activeCases = "" + str(diff_activeCases)
+	diff_activeCases = putSign(diff_activeCases)
 
-	if diff_totalTests > 0:
-	    diff_totalTests = "+" + str(diff_totalTests)
-	elif diff_totalTests == 0:
-	    diff_totalTests = ""
-	elif diff_totalTests < 0:
-	    diff_totalTests = "" + str(diff_totalTests)
+	diff_totalTests = putSign(diff_totalTests)
 
-	if diff_todayCases > 0:
-	    diff_todayCases = "+" + str(diff_todayCases)
-	elif diff_todayCases == 0:
-	    diff_todayCases = "N/A"
-	elif diff_todayCases < 0:
-	    diff_todayCases = "" + str(diff_todayCases)
+	diff_todayCases = putSign(diff_todayCases)
 
-	if diff_casEhpad > 0:
-	    diff_casEhpad = "+" + str(diff_casEhpad)
-	elif diff_casEhpad == 0:
-	    diff_casEhpad = "N/A"
-	elif diff_casEhpad < 0:
-	    diff_casEhpad = "" + str(diff_casEhpad)
+	diff_casEhpad = putSign(diff_casEhpad)
 
 	diffData = {
 	    'casConfirmes': diff_casConfirmes,
