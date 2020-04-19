@@ -84,15 +84,16 @@ first_tweet_form = str("‪La 🇫🇷 est confinée depuis:"
                        + "\n" + "‪ 🦠 — " + format_data(gouvData['casConfirmes']) + " cas " + difference_data[
                            'casConfirmes']
                        + "\n"
-                       + "\n" + "‪Graphique 📈 — ⬇️‬ "
+                       + "\n" + "‪Graphiques 📈 — ⬇️‬ "
                        + "\n" + "#ConfinementJour" + get_days() + " | #COVID19")
 
 second_tweet_form = str(
-    "🏠 " + format_data(gouvData['casEhpad']) + " cas en EHPAD" + " " + difference_data['casEhpad']
-    + "\n" + "🛏 " + format_data(gouvData['casHopital']) + " hospitalisés" + " " + difference_data['casHopital']
+    "🛏 " + format_data(gouvData['casHopital']) + " hospitalisés" + " " + difference_data['casHopital']
+    + "\n" + "🏠 " + format_data(gouvData['casConfirmesEhpad']) + " cas confirmés en ESMS" + " " + difference_data['casConfirmesEhpad']
+    + "\n" + "❓ " + format_data(gouvData['casPossiblesEhpad']) + " cas probables en ESMS" + " " + difference_data['casPossiblesEhpad']
     + "\n" + "🔬 " + format_data(worldometersData['totalTests']) + " dépistages"
     + "‪\n" + ""
-    + "‪\n" + "📈 Évolution #graphique du #COVID19 en #France‬")
+    + "‪\n" + "📈 Évolutions #graphiques du #COVID19 en #France‬")
 
 print(first_tweet_form)
 print("\n------------------\n")
