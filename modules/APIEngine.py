@@ -89,6 +89,20 @@ def get_data(source):
                     cas_ehpad = gouv_data[i]['casEhpad']
 
                 try:
+                    if (int(get_config("CustomData", "casConfirmesEhpad")) > 0):
+                        cas_confirmes_ehpad = int(get_config("CustomData", "casConfirmesEhpad"))
+                        print("[ATTENTION] Chiffres 'casConfirmesEhpad' modifiés manuellements")
+                except:
+                    cas_confirmes_ehpad = gouv_data[i]['casConfirmesEhpad']
+
+                try:
+                    if (int(get_config("CustomData", "casPossiblesEhpad")) > 0):
+                        cas_possibles_ehpad = int(get_config("CustomData", "casPossiblesEhpad"))
+                        print("[ATTENTION] Chiffres 'casPossiblesEhpad' modifiés manuellements")
+                except:
+                    cas_possibles_ehpad = gouv_data[i]['casPossiblesEhpad']
+
+                try:
                     if int(get_config("CustomData", "totalDeces")) > 0:
                         total_deces = int(get_config("CustomData", "totalDeces"))
                         print("[ATTENTION] Chiffres 'totalDeces' modifiés manuellements")
@@ -111,7 +125,9 @@ def get_data(source):
                     'casHopital': cas_hopital,
                     'casGueris': cas_gueris,
                     'casMalades': cas_malades,
-                    'casEhpad': cas_ehpad
+                    'casEhpad': cas_ehpad,
+                    'casConfirmesEhpad': cas_confirmes_ehpad,
+                    'casPossiblesEhpad': cas_possibles_ehpad
                 }
 
                 '''
