@@ -7,8 +7,8 @@
 # Importation des librairies.
 import os
 import sys
-from modules.APIEngine import get_data
-from modules.GraphEngine import make_world_graph, make_local_graph, save_data_graph
+from modules.APIEngine import get_data, json
+from modules.GraphEngine import make_world_graph, make_local_graph, save_data_graph, make_gueris_departements_map, make_hospital_departements_map
 from modules.MathsEngine import percentage_calc, save_worldometers_data, save_gouv_data, calc_difference, check_data_change
 from modules.TwitterEngine import twitter_auth, get_last_tweet
 from modules.TimeEngine import check_time, get_days, datetime, log_time
@@ -90,7 +90,6 @@ first_tweet_form = str("‪La 🇫🇷 est confinée depuis:"
 second_tweet_form = str(
     "🛏 " + format_data(gouvData['casHopital']) + " hospitalisés" + " " + difference_data['casHopital']
     + "\n" + "🏠 " + format_data(gouvData['casConfirmesEhpad']) + " cas confirmés en ESMS" + " " + difference_data['casConfirmesEhpad']
-    + "\n" + "❓ " + format_data(gouvData['casPossiblesEhpad']) + " cas probables en ESMS" + " " + difference_data['casPossiblesEhpad']
     + "\n" + "🔬 " + format_data(worldometersData['totalTests']) + " dépistages"
     + "‪\n" + ""
     + "‪\n" + "📈 Évolutions #graphiques du #COVID19 en #France‬")
@@ -105,8 +104,7 @@ print("\n----------------------------------------\n")
 
 # ----------------------------------#
 # On sauvegarde toutes les données
-save_data_graph(gouvData['casConfirmes'], gouvData['casHopital'], gouvData['casReanimation'], gouvData['totalDeces'],
-                gouvData['casGueris'])
+save_data_graph(gouvData['casConfirmes'], gouvData['casHopital'], gouvData['casReanimation'], gouvData['totalDeces'], gouvData['casGueris'])
 print(log_time() + "Données du graphique mises à jours !")
 
 save_gouv_data(gouvData)
@@ -121,7 +119,13 @@ print(log_time() + "Graphique pour la France généré !")
 make_world_graph()
 print(log_time() + "Graphique pour le monde généré !")
 
-img_packed = ('data/localGraph.png', 'data/worldGraph.png')
+make_hospital_departements_map()
+print(log_time() + "Map des hospitalisés générée !") 
+
+make_gueris_departements_map()
+print(log_time() + "Map des guéris générée !") 
+
+img_packed = ('/root/COVID19-France/data/localGraph.png', '/root/COVID19-France/data/worldGraph.png', '/root/COVID19-France/data/departements_gueris_map.png', '/root/COVID19-France/data/departements_hospital_map.png')
 media_tweet = [api.media_upload(i).media_id_string  for i in img_packed] 
 print(log_time() + "Préparation des images pour le tweet terminée !")
 
