@@ -33,7 +33,6 @@ def check_data_change():
         cas_malades = data['casMalades']
         cas_ehpad = data['casEhpad']
         cas_confirmes_ehpad = data['casConfirmesEhpad']
-        cas_possibles_ehpad = data['casPossiblesEhpad']
 
     with open(directory + 'data/oldGouvData.json') as oldData:
         data = json.load(oldData)
@@ -57,7 +56,6 @@ def calc_difference():
         cas_malades = data['casMalades']
         cas_ehpad = data['casEhpad']
         cas_confirmes_ehpad = data['casConfirmesEhpad']
-        cas_possibles_ehpad = data['casPossiblesEhpad']
 
     with open(directory + 'data/oldGouvData.json') as old_dataData:
         data = json.load(old_dataData)
@@ -71,7 +69,6 @@ def calc_difference():
         old_cas_malades = data['casMalades']
         old_cas_ehpad = data['casEhpad']
         old_cas_confirmes_ehpad = data['casConfirmesEhpad']
-        old_cas_possibles_ehpad = data['casPossiblesEhpad']
 
     with open(directory + 'data/todayWorldometersData.json') as today_data:
         data = json.load(today_data)
@@ -102,7 +99,6 @@ def calc_difference():
     diff_cas_malades = cas_malades - old_cas_malades
     diff_cas_ehpad = cas_ehpad - old_cas_ehpad
     diff_cas_confirmes_ehpad = cas_confirmes_ehpad - old_cas_confirmes_ehpad
-    diff_cas_possibles_ehpad = cas_possibles_ehpad - old_cas_possibles_ehpad
 
     diff_active_cases = active - old_active
     diff_total_tests = totalTests - old_totalTests
@@ -121,7 +117,6 @@ def calc_difference():
     diff_today_cases = put_sign(diff_today_cases)
     diff_cas_ehpad = put_sign(diff_cas_ehpad)
     diff_cas_confirmes_ehpad = put_sign(diff_cas_confirmes_ehpad)
-    diff_cas_possibles_ehpad = put_sign(diff_cas_possibles_ehpad)
 
     diff_data = {
         'casConfirmes': diff_cas_confirmes,
@@ -133,7 +128,6 @@ def calc_difference():
         'casHopital': diff_cas_hopital,
         'casGueris': diff_cas_gueris,
         'casConfirmesEhpad': diff_cas_confirmes_ehpad,
-        'casPossiblesEhpad': diff_cas_possibles_ehpad,
         'casMalades_GOUV': diff_cas_malades,
         'casMalades_WORLDOMETERS': diff_active_cases,
         'todayCases': diff_today_cases,
