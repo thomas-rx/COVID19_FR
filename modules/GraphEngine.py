@@ -5,6 +5,13 @@
 # www.xrths.fr
 
 # Importation des librairies.
+import pygal.maps.fr
+from pygal.style import Style
+import cairosvg
+
+import matplotlib.image as image
+import matplotlib.cbook as cbook
+
 from modules.ConfigEngine import get_config
 import os
 import requests
@@ -67,15 +74,21 @@ def make_local_graph():
     ax.get_yaxis().set_major_formatter(
         matplotlib.ticker.FuncFormatter(lambda x, p: format(int(x), ',')))
 
-    # plt.ylabel(u'Graphique généré le ' + currentDT.strftime("%d-%m-%Y %H:%M:%S") + ' Par @COVID_France', fontsize = 7)
+    plt.ylabel(u'Twitter - @' + get_config('TwitterAPI',
+                                           'account_name') + '\n', style='italic', fontsize=8)
     plt.xlabel(u'Jours à partir du confinement: Mardi 17 Mars 2020',
                fontsize=12, style='italic')
     plt.title(u'AVANCÉE DU COVID-19 EN FRANCE\n(' +
-              current_time.strftime("%d") + u' Avril 2020)', fontweight='bold')
+              current_time.strftime("%d") + u' Mai 2020)', fontweight='bold')
     plt.legend(prop={'size': 11}, labelspacing=1.1)
     plt.grid(color='grey', linestyle='solid', linewidth=0.5)
 
     plt.savefig(directory + 'data/localGraph.png', format='png', dpi=200)
+    if not os.path.isdir('/var/www/html/covid19/data/' + datetime.datetime.now().strftime("%d-%m-%Y")):
+        os.makedirs('/var/www/html/covid19/data/' +
+                    datetime.datetime.now().strftime("%d-%m-%Y"))
+    plt.savefig('/var/www/html/covid19/data/' + datetime.datetime.now().strftime(
+        "%d-%m-%Y") + '/localGraph.png', format='png', dpi=200)
 
     return  # Le laisser sinon risque de duplication de légende
 
@@ -163,6 +176,10 @@ def make_world_graph():
     ax.set_xticks(x)
     ax.set_xticklabels(graph_labels, rotation=35, size=9.2,
                        backgroundcolor='dimgray', color='white')
+
+    # plt.legend(prop={'size': 15}, labelspacing=5)
+    plt.ylabel(u'Twitter - @' + get_config('TwitterAPI',
+                                           'account_name') + '\n', style='italic', fontsize=8)
     ax.legend()
     ax.get_yaxis().set_major_formatter(
         matplotlib.ticker.FuncFormatter(lambda x, p: format(int(x), ',')))
@@ -180,16 +197,90 @@ def make_world_graph():
                             ha='center', va='bottom', fontsize=size, style='italic')
 
     add_label(ax_total, 10)
-    #add_label(ax_recovered, 7)
-    #add_label(ax_deaths, 6)
+    # add_label(ax_recovered, 7)
+    # add_label(ax_deaths, 6)
 
     plt.grid(color='grey', linestyle='solid', linewidth=0.1)
     plt.title(u'AVANCÉE DU COVID-19 DANS LE MONDE\n(' +
-              current_time.strftime("%d") + u' Avril 2020)', fontweight='bold')
+              current_time.strftime("%d") + u' Mai 2020)', fontweight='bold')
     plt.savefig(directory + 'data/worldGraph.png', format='png', dpi=200)
+    if not os.path.isdir('/var/www/html/covid19/data/' + datetime.datetime.now().strftime("%d-%m-%Y")):
+        os.makedirs('/var/www/html/covid19/data/' +
+                    datetime.datetime.now().strftime("%d-%m-%Y"))
+    plt.savefig('/var/www/html/covid19/data/' + datetime.datetime.now().strftime(
+        "%d-%m-%Y") + '/worldGraph.png', format='png', dpi=200)
 
     return
 
+
+def make_hospital_departements_map():
+    data = {}
+
+    today_date = datetime.datetime.now().strftime("%Y-%m-%d")
+
+    gouv_data = requests.get(
+        "https://raw.githubusercontent.com/opencovid19-fr/data/master/dist/chiffres-cles.json")
+    gouv_data = gouv_data.json()
+
+    count_lines = len(gouv_data)
+
+    try:
+        for i in range(count_lines):
+            if(str(gouv_data[i]['date']) == today_date):
+                # print(str(python_obj[i]['code']))
+                dep_code = "DEP-" in (str(gouv_data[i]['code']))
+                if (dep_code == True):
+                    dep_code = str(gouv_data[i]['code']).replace('DEP-', "")
+                    data[str(dep_code)] = int(gouv_data[i]['hospitalises'])
+    except:
+        pass
+
+    custom_style = Style(background='#FFFFFF', label_font_size=5,
+                        title_font_size=20, title_font_family='jsp', colors=('#cc0000', '#ffe6e6')) #MOINs -> FORTE COULEUR
+
+    fr_chart = pygal.maps.fr.Departments(style=custom_style, show_legend=False)
+    fr_chart.title = '\n- Taux de la population activement malade - \n[' + current_time.strftime("%d") + u' Mai 2020]'
+    fr_chart.add(today_date, data)
+    fr_chart.render_to_png(directory + 'data/departements_hospital_map.png', dpi=1000)
+    fr_chart.render_to_png('/var/www/html/covid19/data/' + datetime.datetime.now().strftime("%d-%m-%Y")  + 'departements_hospital_map.png', dpi=1000)
+
+    return
+
+def make_gueris_departements_map():
+    data = {}
+
+    today_date = datetime.datetime.now().strftime("%Y-%m-%d")
+
+    gouv_data = requests.get(
+        "https://raw.githubusercontent.com/opencovid19-fr/data/master/dist/chiffres-cles.json")
+    gouv_data = gouv_data.json()
+
+    count = len(gouv_data)
+    count_lines = len(gouv_data)
+
+    try:
+        for i in range(count_lines):
+            if(str(gouv_data[i]['date']) == today_date):
+                # print(str(python_obj[i]['code']))
+                dep_code = "DEP-" in (str(gouv_data[i]['code']))
+                if (dep_code == True):
+                    dep_code = str(gouv_data[i]['code']).replace('DEP-', "")
+                    data[str(dep_code)] = int(gouv_data[i]['gueris'])
+    except:
+        pass
+    
+    print(data)
+    custom_style = Style(background='#FFFFFF', label_font_size=5,
+                        title_font_size=20, title_font_family='jsp', colors=('#00b300', '#ccffcc')) #COULEUR CLAIRE, COULEUR FONCÉE
+
+    fr_chart = pygal.maps.fr.Departments(style=custom_style, show_legend=False)
+    fr_chart.title = '\n- Taux de la population guérie -\n[' + current_time.strftime("%d") + u' Mai 2020]'
+    fr_chart.add(today_date, data)
+    fr_chart.render_to_png(directory + 'data/departements_gueris_map.png', dpi=1000)
+    fr_chart.render_to_png('/var/www/html/covid19/data/' + datetime.datetime.now().strftime(
+        "%d-%m-%Y")  + 'departements_gueris_map.png', dpi=1000)
+
+    return
 
 def save_data_graph(total_cases, sick_cases, severe_cases, dead_cases, recovered_cases):
     data_graph = open(directory + 'data/graphData.txt', 'a')
