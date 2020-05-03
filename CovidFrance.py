@@ -8,8 +8,10 @@
 import os
 import sys
 from modules.APIEngine import get_data, json
-from modules.GraphEngine import make_world_graph, make_local_graph, save_data_graph, make_gueris_departements_map, make_hospital_departements_map
-from modules.MathsEngine import percentage_calc, save_worldometers_data, save_gouv_data, calc_difference, check_data_change
+from modules.GraphEngine import make_world_graph, make_local_graph, save_data_graph, make_gueris_departements_map, \
+    make_hospital_departements_map
+from modules.MathsEngine import percentage_calc, save_worldometers_data, save_gouv_data, calc_difference, \
+    check_data_change
 from modules.TwitterEngine import twitter_auth, get_last_tweet
 from modules.TimeEngine import check_time, get_days, datetime, log_time
 from modules.ConfigEngine import get_config, get_config_boolean
@@ -27,7 +29,7 @@ else:
 
 if get_last_tweet() == 1:  # On vérifie que le bot n'a pas déjà posté aujourd'hui
     print(log_time() + "Un tweet posté avec l'application [" + get_config('TwitterAPI',
-                                                                       'app_name') + "] existe déjà pour aujourd'hui !")
+                                                                          'app_name') + "] existe déjà pour aujourd'hui !")
     sys.exit()
 elif get_last_tweet() == 0:
     print(log_time() + "Aucun tweet n'a été posté aujourd'hui, suite du programme...")
@@ -41,7 +43,7 @@ gouvData = get_data("GOUVERNEMENT")  # On récupère les données du gouvernemen
 
 # ----------------------------------#
 
-if gouvData != None:  # Si elles sont valides
+if gouvData is not None:  # Si elles sont valides
     check_data_change()  # On vérifie quelles sont un minimum cohérentes
     worldometersData = get_data(
         "WORLDOMETERS")  # Si c'est bon, on récupère les données de Worldometers (je l'ai mis ici pour éviter de spam l'api et de se faire ban-ip)
@@ -89,7 +91,8 @@ first_tweet_form = str("‪La 🇫🇷 est confinée depuis:"
 
 second_tweet_form = str(
     "🛏 " + format_data(gouvData['casHopital']) + " hospitalisés" + " " + difference_data['casHopital']
-    + "\n" + "🏠 " + format_data(gouvData['casConfirmesEhpad']) + " cas confirmés en ESMS" + " " + difference_data['casConfirmesEhpad']
+    + "\n" + "🏠 " + format_data(gouvData['casConfirmesEhpad']) + " cas confirmés en ESMS" + " " + difference_data[
+        'casConfirmesEhpad']
     + "\n" + "🔬 " + format_data(worldometersData['totalTests']) + " dépistages"
     + "‪\n" + ""
     + "‪\n" + "📈 Évolutions #graphiques du #COVID19 en #France‬")
@@ -104,7 +107,8 @@ print("\n----------------------------------------\n")
 
 # ----------------------------------#
 # On sauvegarde toutes les données
-save_data_graph(gouvData['casConfirmes'], gouvData['casHopital'], gouvData['casReanimation'], gouvData['totalDeces'], gouvData['casGueris'])
+save_data_graph(gouvData['casConfirmes'], gouvData['casHopital'], gouvData['casReanimation'], gouvData['totalDeces'],
+                gouvData['casGueris'])
 print(log_time() + "Données du graphique mises à jours !")
 
 save_gouv_data(gouvData)
@@ -120,20 +124,23 @@ make_world_graph()
 print(log_time() + "Graphique pour le monde généré !")
 
 make_hospital_departements_map()
-print(log_time() + "Map des hospitalisés générée !") 
+print(log_time() + "Map des hospitalisés générée !")
 
 make_gueris_departements_map()
-print(log_time() + "Map des guéris générée !") 
+print(log_time() + "Map des guéris générée !")
 
-img_packed = ('/root/COVID19-France/data/localGraph.png', '/root/COVID19-France/data/worldGraph.png', '/root/COVID19-France/data/departements_gueris_map.png', '/root/COVID19-France/data/departements_hospital_map.png')
-media_tweet = [api.media_upload(i).media_id_string  for i in img_packed] 
+img_packed = ('/root/COVID19-France/data/localGraph.png', '/root/COVID19-France/data/worldGraph.png',
+              '/root/COVID19-France/data/departements_gueris_map.png',
+              '/root/COVID19-France/data/departements_hospital_map.png')
+media_tweet = [api.media_upload(i).media_id_string for i in img_packed]
 print(log_time() + "Préparation des images pour le tweet terminée !")
 
 # ----------------------------------#
 # On tweet
 posted_tweet = api.update_status(first_tweet_form)
 
-api.update_status(status = second_tweet_form,  media_ids = media_tweet, in_reply_to_status_id = posted_tweet.id, retry_count=10, retry_delay=5, retry_errors=set([503]))
+api.update_status(status=second_tweet_form, media_ids=media_tweet, in_reply_to_status_id=posted_tweet.id,
+                  retry_count=10, retry_delay=5, retry_errors={503})
 
 # On envoie le lien du tweet sur le compte privé du propriétaire
 api.send_direct_message(recipient_id=get_config('TwitterAPI', 'preview_id'),

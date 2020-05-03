@@ -14,7 +14,8 @@ from modules.ConfigEngine import get_config
 dateSelected = datetime.datetime.now().strftime("%Y-%m-%d")  # Date du jour pour parse le JSON
 directory = os.path.join(os.path.dirname(__file__), '../')
 
-#dateSelected = '2020-04-29' #Permet de sélectionner une date 'manuellement'
+
+# dateSelected = '2020-04-29' #Permet de sélectionner une date 'manuellement'
 
 def get_data(source):
     if source == "WORLDOMETERS":
@@ -82,14 +83,14 @@ def get_data(source):
                     cas_gueris = gouv_data[i]['gueris']
 
                 try:
-                    if (int(get_config("CustomData", "casEhpad")) > 0):
+                    if int(get_config("CustomData", "casEhpad")) > 0:
                         cas_ehpad = int(get_config("CustomData", "casEhpad"))
                         print("[ATTENTION] Chiffres 'casEhpad' modifiés manuellements")
                 except:
                     cas_ehpad = gouv_data[i]['casEhpad']
 
                 try:
-                    if (int(get_config("CustomData", "casConfirmesEhpad")) > 0):
+                    if int(get_config("CustomData", "casConfirmesEhpad")) > 0:
                         cas_confirmes_ehpad = int(get_config("CustomData", "casConfirmesEhpad"))
                         print("[ATTENTION] Chiffres 'casConfirmesEhpad' modifiés manuellements")
                 except:
@@ -132,5 +133,6 @@ def get_data(source):
                     json.dump(gouv_data, data)
 
                 return gouv_data
+
 
 get_data("GOUVERNEMENT")
