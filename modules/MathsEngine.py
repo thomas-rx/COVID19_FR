@@ -12,13 +12,15 @@ from modules.ConfigEngine import get_config
 
 directory = os.path.join(os.path.dirname(__file__), '../')
 
+
 def put_sign(var):
-	if var > 0:
-		return '+' + str(var)
-	elif var == 0:
-		return 'N/A'
-	else:
-		return str(var)
+    if var > 0:
+        return '+' + str(var)
+    elif var == 0:
+        return 'N/A'
+    else:
+        return str(var)
+
 
 def check_data_change():
     with open(directory + 'data/todayGouvData.json') as today_data:

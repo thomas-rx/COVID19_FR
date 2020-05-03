@@ -21,6 +21,7 @@ import numpy as np
 import csv
 import matplotlib.pyplot as plt
 import matplotlib
+
 matplotlib.matplotlib_fname()
 '/etc/matplotlibrc'
 matplotlib.use('Agg')
@@ -98,7 +99,6 @@ def sort(d, order):
 
 
 def make_world_graph():
-
     worldometers_api = requests.get(
         "https://coronavirus-19-api.herokuapp.com/countries")
     worldometers_data = worldometers_api.json()
@@ -140,7 +140,7 @@ def make_world_graph():
                     {str(worldometers_data[i]['country']): 0})
 
         try:
-            if i >= 0 and i <= int(get_config('GraphConfig', 'countryView')):
+            if 0 <= i <= int(get_config('GraphConfig', 'countryView')):
                 total_cases.update({'France': cas_confirmes})
                 dead_cases.update({'France': total_deces})
                 recovered_cases.update({'France': cas_gueris})
@@ -166,11 +166,11 @@ def make_world_graph():
     width = 0.275
 
     fig, ax = plt.subplots()
-    ax_total = ax.bar(x + width/2, total_cases_formated, width,
+    ax_total = ax.bar(x + width / 2, total_cases_formated, width,
                       label=u'Population touchée', color='indianred')
-    ax_recovered = ax.bar(x - width/2, total_recovered_formated,
+    ax_recovered = ax.bar(x - width / 2, total_recovered_formated,
                           width, label=u'Population guérie', color='yellowgreen')
-    ax_deaths = ax.bar(x - width/2, total_deaths_formated,
+    ax_deaths = ax.bar(x - width / 2, total_deaths_formated,
                        width, label=u'Population décédée', color='dimgray')
 
     ax.set_xticks(x)
@@ -226,32 +226,38 @@ def make_hospital_departements_map():
 
     try:
         for i in range(count_lines):
-            if(str(gouv_data[i]['date']) == today_date):
+            if str(gouv_data[i]['date']) == today_date:
                 # print(str(python_obj[i]['code']))
                 dep_code = "DEP-" in (str(gouv_data[i]['code']))
-                if (dep_code == True):
+                if dep_code:
                     dep_code = str(gouv_data[i]['code']).replace('DEP-', "")
                     data[str(dep_code)] = int(gouv_data[i]['hospitalises'])
     except:
         pass
 
     custom_style = Style(background='#FFFFFF', label_font_size=5,
-                        title_font_size=20, title_font_family='jsp', colors=('#cc0000', '#ffe6e6')) #MOINs -> FORTE COULEUR
+                         title_font_size=20, title_font_family='jsp',
+                         colors=('#cc0000', '#ffe6e6'))  # MOINs -> FORTE COULEUR
 
     fr_chart = pygal.maps.fr.Departments(style=custom_style, show_legend=False)
-    fr_chart.title = '\nConcentration de la population hospitalisée en France\n[' + current_time.strftime("%d") + u' Mai 2020]'
+    fr_chart.title = '\nConcentration de la population hospitalisée en France\n[' + current_time.strftime(
+        "%d") + u' Mai 2020]'
     fr_chart.add(today_date, data)
     fr_chart.render_to_png(directory + 'data/departements_hospital_map.png', dpi=1000)
-    fr_chart.render_to_png('/var/www/html/covid19/data/' + datetime.datetime.now().strftime("%d-%m-%Y")  + 'departements_hospital_map.png', dpi=1000)
+    fr_chart.render_to_png(
+        '/var/www/html/covid19/data/' + datetime.datetime.now().strftime("%d-%m-%Y") + 'departements_hospital_map.png',
+        dpi=1000)
 
     return
+
 
 def make_gueris_departements_map():
     today_data = {}
     yesterday_data = {}
 
     today_date = datetime.datetime.now().strftime("%Y-%m-%d")
-    yesterday_date = (datetime.datetime.strptime(today_date, "%Y-%m-%d") - datetime.timedelta(days=1)).strftime("%Y-%m-%d")
+    yesterday_date = (datetime.datetime.strptime(today_date, "%Y-%m-%d") - datetime.timedelta(days=1)).strftime(
+        "%Y-%m-%d")
 
     gouv_data = requests.get(
         "https://raw.githubusercontent.com/opencovid19-fr/data/master/dist/chiffres-cles.json")
@@ -262,10 +268,10 @@ def make_gueris_departements_map():
 
     try:
         for i in range(count_lines):
-            if(str(gouv_data[i]['date']) == today_date):
+            if str(gouv_data[i]['date']) == today_date:
                 # print(str(python_obj[i]['code']))
                 dep_code = "DEP-" in (str(gouv_data[i]['code']))
-                if (dep_code == True):
+                if dep_code:
                     dep_code = str(gouv_data[i]['code']).replace('DEP-', "")
                     today_data[str(dep_code)] = int(gouv_data[i]['gueris'])
     except:
@@ -273,28 +279,30 @@ def make_gueris_departements_map():
 
     try:
         for i in range(count_lines):
-            if(str(gouv_data[i]['date']) == yesterday_date):
+            if str(gouv_data[i]['date']) == yesterday_date:
                 # print(str(python_obj[i]['code']))
                 dep_code = "DEP-" in (str(gouv_data[i]['code']))
-                if (dep_code == True):
+                if dep_code:
                     dep_code = str(gouv_data[i]['code']).replace('DEP-', "")
                     yesterday_data[str(dep_code)] = int(gouv_data[i]['gueris'])
     except:
         pass
 
     final_data = {key: today_data[key] - yesterday_data.get(key, 0) for key in today_data}
-    
+
     custom_style = Style(background='#FFFFFF', label_font_size=5,
-                        title_font_size=20, title_font_family='jsp', colors=('#00b300', '#ccffcc')) #COULEUR CLAIRE, COULEUR FONCÉE
+                         title_font_size=20, title_font_family='jsp',
+                         colors=('#00b300', '#ccffcc'))  # COULEUR CLAIRE, COULEUR FONCÉE
 
     fr_chart = pygal.maps.fr.Departments(style=custom_style, show_legend=False)
     fr_chart.title = '\nConcentration de nouveaux guéris en France\n[' + current_time.strftime("%d") + u' Mai 2020]'
     fr_chart.add(today_date, final_data)
     fr_chart.render_to_png(directory + 'data/departements_gueris_map.png', dpi=1000)
     fr_chart.render_to_png('/var/www/html/covid19/data/' + datetime.datetime.now().strftime(
-        "%d-%m-%Y")  + 'departements_gueris_map.png', dpi=1000)
+        "%d-%m-%Y") + 'departements_gueris_map.png', dpi=1000)
 
     return
+
 
 def save_data_graph(total_cases, sick_cases, severe_cases, dead_cases, recovered_cases):
     data_graph = open(directory + 'data/graphData.txt', 'a')
