@@ -239,7 +239,7 @@ def make_hospital_departements_map():
                         title_font_size=20, title_font_family='jsp', colors=('#cc0000', '#ffe6e6')) #MOINs -> FORTE COULEUR
 
     fr_chart = pygal.maps.fr.Departments(style=custom_style, show_legend=False)
-    fr_chart.title = '\n- Taux de la population activement malade - \n[' + current_time.strftime("%d") + u' Mai 2020]'
+    fr_chart.title = '\nConcentration de la population hospitalisée en France\n[' + current_time.strftime("%d") + u' Mai 2020]'
     fr_chart.add(today_date, data)
     fr_chart.render_to_png(directory + 'data/departements_hospital_map.png', dpi=1000)
     fr_chart.render_to_png('/var/www/html/covid19/data/' + datetime.datetime.now().strftime("%d-%m-%Y")  + 'departements_hospital_map.png', dpi=1000)
@@ -247,9 +247,11 @@ def make_hospital_departements_map():
     return
 
 def make_gueris_departements_map():
-    data = {}
+    today_data = {}
+    yesterday_data = {}
 
     today_date = datetime.datetime.now().strftime("%Y-%m-%d")
+    yesterday_date = (datetime.datetime.strptime(today_date, "%Y-%m-%d") - datetime.timedelta(days=1)).strftime("%Y-%m-%d")
 
     gouv_data = requests.get(
         "https://raw.githubusercontent.com/opencovid19-fr/data/master/dist/chiffres-cles.json")
@@ -265,17 +267,29 @@ def make_gueris_departements_map():
                 dep_code = "DEP-" in (str(gouv_data[i]['code']))
                 if (dep_code == True):
                     dep_code = str(gouv_data[i]['code']).replace('DEP-', "")
-                    data[str(dep_code)] = int(gouv_data[i]['gueris'])
+                    today_data[str(dep_code)] = int(gouv_data[i]['gueris'])
     except:
         pass
+
+    try:
+        for i in range(count_lines):
+            if(str(gouv_data[i]['date']) == yesterday_date):
+                # print(str(python_obj[i]['code']))
+                dep_code = "DEP-" in (str(gouv_data[i]['code']))
+                if (dep_code == True):
+                    dep_code = str(gouv_data[i]['code']).replace('DEP-', "")
+                    yesterday_data[str(dep_code)] = int(gouv_data[i]['gueris'])
+    except:
+        pass
+
+    final_data = {key: today_data[key] - yesterday_data.get(key, 0) for key in today_data}
     
-    print(data)
     custom_style = Style(background='#FFFFFF', label_font_size=5,
                         title_font_size=20, title_font_family='jsp', colors=('#00b300', '#ccffcc')) #COULEUR CLAIRE, COULEUR FONCÉE
 
     fr_chart = pygal.maps.fr.Departments(style=custom_style, show_legend=False)
-    fr_chart.title = '\n- Taux de la population guérie -\n[' + current_time.strftime("%d") + u' Mai 2020]'
-    fr_chart.add(today_date, data)
+    fr_chart.title = '\nConcentration de nouveaux guéris en France\n[' + current_time.strftime("%d") + u' Mai 2020]'
+    fr_chart.add(today_date, final_data)
     fr_chart.render_to_png(directory + 'data/departements_gueris_map.png', dpi=1000)
     fr_chart.render_to_png('/var/www/html/covid19/data/' + datetime.datetime.now().strftime(
         "%d-%m-%Y")  + 'departements_gueris_map.png', dpi=1000)
