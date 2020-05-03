@@ -8,7 +8,7 @@
   
 <h4 align="center">Bot Twitter qui fournit les chiffres du COVID-19 pour la France. 
 <br>
-<a href="https://twitter.com/CovidFrance" target="_blank">@CovidFrance (+20K)</a></h4>
+<a href="https://twitter.com/CovidFrance" target="_blank">@CovidFrance (+30K)</a></h4>
 
 <p align="center">
   <a href="https://www.python.org/">
@@ -21,14 +21,20 @@
   [![Tweepy](https://img.shields.io/badge/tweepy-3.8.0-blue.svg)](https://pypi.org/project/tweepy/)
   [![Requests](https://img.shields.io/badge/requests-2.23.0-blue.svg)](https://pypi.org/project/requests/)
   [![Matplotlib](https://img.shields.io/badge/matplotlib-2.2.5-blue.svg)](https://pypi.org/project/matplotlib/)
-  [![Numpy](https://img.shields.io/badge/numpy-1.16.6-blue.svg)](https://pypi.org/project/numpy/)
+  [![Numpy](https://img.shields.io/badge/numpy-1.16.6-blue.svg)](https://pypi.org/project/numpy/) 
+[ ![Cairosvg](https://img.shields.io/badge/cairosvg-2.4.2-blue.svg)](https://pypi.org/project/cairosvg/)
+[ ![Pygal](https://img.shields.io/badge/pygal-2.4.0-blue.svg)](https://pypi.org/project/pygal/)
+
+
+
+
 
 </div>
     
 <p align="center">
   <a href="#données">Données</a> |
   <a href="#mise-en-service">Mise en service</a> |
-  <a href="#graphique-généré-automatiquement">Graphique</a> |
+  <a href="#graphiques-générés-automatiquement">Graphiques</a> |
   <a href="#remerciements">Remerciements</a> |
   <a href="#licence">Licence</a> 
   <br>
@@ -48,13 +54,13 @@ Les données sont lues sur le GitHub de [opencovid19-fr](https://github.com/open
 
 * **Cas totaux confirmés:** 'casConfirmes'
 * **Cas décédés en hopîtaux:** 'decesHopital'
-* **Cas décédés en EPHAD ou EMS:** 'decesEhpad'
+* **Cas décédés en ESMS:** 'decesEhpad'
 * **Cas totaux décédés:** 'totalDeces'
 * **Cas en réanimations:** 'casReanimation'
 * **Cas hospitalisés:** 'casHopital'
 * **Cas guéris:** 'casGueris'
 * **Cas toujours malades:** 'casMalades'
-* **Cas  confirmés en EHPAD:** 'casEhpad'
+* **Cas  confirmés en ESMS:** 'casEhpad'
 ---
 
 Les données PEUVENT aussi êtres tirées de de Worldometers, l'API utilisée est [celle ci](https://coronavirus-19-api.herokuapp.com/countries/france).
@@ -82,7 +88,7 @@ $ cd COVID19-France/
 
 ```bash
 # Installer les dépendances
-$ pip install -r requirements.txt
+$ pip3 install -r requirements.txt
 ```
 
 ```bash
@@ -129,18 +135,42 @@ $ python3 CovidFrance.py
     totalDeces  =
     casMalades  =
     casEhpad = 
-    
+     
 *Permet de modifier les chiffres manuellements, laisser vide si vous ne souhaitez pas modifier.*
-*Exemple de modification:*
+
 
     casMalades  = 10000
-    
+*Exemple de modification*
+
+    countryView  = 10
+*Nombre de pays à afficher sur le graphique mondial*
+
+    [TraductionGraph]
+    USA  = USA
+    Spain  = Espagne
+    Italy  = Italie
+    Germany  = Allemagne
+    UK  = UK
+    France  = France
+    Iran  = Iran
+    Turkey  = Turquie
+    Belgium  = Belgique
+    Russia  = Russie
+    Brazil  = Brésil
+    Canada  = Canada
+    Netherlands  = Pays-Bas
+    Switzerland  = Suisse
+    Portugal  = Portugal
+    India  = Inde
+
+*Traduction des pays pour le graphique mondial*
+
 **Rendre le programme automatique**
 Il suffit de créer une tâche CRON. Voici un exemple qui exécute le programme toutes les 8 minutes:
 
     */8 * * * * python3 /root/COVID19-France/CovidFrance.py > /root/COVID19-France/log.txt 2>&1
 
-## Graphique généré automatiquement
+## Graphiques générés automatiquement
 <p align="center">
   <img src="https://i.ibb.co/Zf1gwGN/screely-1586902076592.png">
 </p>
@@ -154,20 +184,25 @@ Il suffit de créer une tâche CRON. Voici un exemple qui exécute le programme 
 
 **N.B: Les "0" sont obligatoires à chaques début de ligne.** 
 
-*J'ai fait ça rapidement et ce n'est vraiment pas optimisé, mais cela fonctionne plutôt bien.*
+<p align="center">
+  <img src="https://i.ibb.co/XC12cqk/screely-1588453510580.png">
+</p>
 
+*Les données proviennent de Worldometers directement avec une correction des chiffres pour la France.*
+
+<p align="center">
+  <img src="https://i.ibb.co/q9z8zW9/screely-1588453648164.png">
+</p>
+<p align="center">
+  <img src="https://i.ibb.co/bXnHB8S/screely-1588453729779.png">
+</p>
+
+*Ces données sont directement lues sur le JSON quotidient d'opencovid-fr.*
 ## Remerciements
 
 Je tiens sincèrement à vous **remercier** si vous consultez ce repo ou même si vous avez suivis le compte, lorsque j'ai créé ce programme je ne pensais pas qu’autant de personnes me feraient **confiance** ! 
 
 Je tiens à remercier tout spécialement l'équipe de **[@Conflits_FR](https://twitter.com/Conflits_FR)** qui ont permis de faire ****connaître**** le compte très rapidement et donc de le rendre vraiment utile au grand **public** ! 
-
-<p align="center">
-<img src="https://pbs.twimg.com/profile_images/1225053312615096322/W0iRUc1r_400x400.jpg" width="100px;"/><br /><sub><b>@Conflits_FR</b></sub></p>
-<p align="center"><img src= "https://pbs.twimg.com/profile_images/1236781113198198785/uoN74yI__400x400.png" width="100px;"/><br /><sub><b>@allshebergfr</b></sub>
-</p>
-
-
 
 ## Licence
 Licence MIT - Contactez-moi si vous avez des questions à propos de ça.
