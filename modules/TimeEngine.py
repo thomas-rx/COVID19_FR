@@ -21,6 +21,7 @@ def get_days():
 
     return str(number_of_days)
 
+
 def check_time():
     if get_config_boolean('System', 'checkTime'):
         get_time_now = datetime.now().strftime("%H:%M")
@@ -34,6 +35,7 @@ def check_time():
         return start_time < get_time_now < end_time
     else:
         return True
+
 
 def log_time():
     return "[" + datetime.now().strftime("%D %H:%M:%S") + "] "
