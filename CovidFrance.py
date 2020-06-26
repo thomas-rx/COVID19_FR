@@ -12,29 +12,29 @@ from modules.GraphEngine import make_world_graph, make_local_graph, save_data_gr
     make_hospital_departements_map
 from modules.MathsEngine import percentage_calc, save_worldometers_data, save_gouv_data, calc_difference, \
     check_data_change
-from modules.TwitterEngine import twitter_auth, get_last_tweet
+from modules.TwitterEngine import TwitterEngine
 from modules.TimeEngine import check_time, get_days, datetime, log_time
 from modules.ConfigEngine import get_config, get_config_boolean
 
-api, auth = twitter_auth()  # API TWEEPY
+twitter_handler = TwitterEngine()
 
 # ----------------------------------#
 
-if check_time():  # On vérifie le créneau horaire si activé dans le fichier config.ini
-    pass
-else:
+if not check_time():  # On vérifie le créneau horaire si activé dans le fichier config.ini
     sys.exit()
 
 # ----------------------------------#
+try:
+    if twitter_handler.is_there_a_last_tweet():  # On vérifie que le bot n'a pas déjà posté aujourd'hui
+        print(log_time() + "Un tweet posté avec l'application [" + get_config('TwitterAPI',
+                                                                              'app_name') + "] existe déjà pour aujourd'hui !")
+        sys.exit()
 
-if get_last_tweet() == 1:  # On vérifie que le bot n'a pas déjà posté aujourd'hui
-    print(log_time() + "Un tweet posté avec l'application [" + get_config('TwitterAPI',
-                                                                          'app_name') + "] existe déjà pour aujourd'hui !")
-    sys.exit()
-elif get_last_tweet() == 0:
-    print(log_time() + "Aucun tweet n'a été posté aujourd'hui, suite du programme...")
-else:
-    print(log_time() + "Erreur.")
+    else:
+        print(log_time() + "Aucun tweet n'a été posté aujourd'hui, suite du programme...")
+
+except Exception as why:
+    print(log_time() + "Erreur : " + why)
     sys.exit()
 
 # ----------------------------------#
@@ -133,17 +133,18 @@ print(log_time() + "Map des guéris générée !")
 img_packed = ('/root/COVID19-France/data/localGraph.png', '/root/COVID19-France/data/worldGraph.png',
               '/root/COVID19-France/data/departements_gueris_map.png',
               '/root/COVID19-France/data/departements_hospital_map.png')
-media_tweet = [api.media_upload(i).media_id_string for i in img_packed]
+media_tweet = [twitter_handler.api.media_upload(
+    i).media_id_string for i in img_packed]
 print(log_time() + "Préparation des images pour le tweet terminée !")
 
 # ----------------------------------#
 # On tweet
-posted_tweet = api.update_status(first_tweet_form)
+posted_tweet = twitter_handler.api.update_status(first_tweet_form)
 
-api.update_status(status=second_tweet_form, media_ids=media_tweet, in_reply_to_status_id=posted_tweet.id,
-                  retry_count=10, retry_delay=5, retry_errors={503})
+twitter_handler.api.update_status(status=second_tweet_form, media_ids=media_tweet, in_reply_to_status_id=posted_tweet.id,
+                                  retry_count=10, retry_delay=5, retry_errors={503})
 
 # On envoie le lien du tweet sur le compte privé du propriétaire
-api.send_direct_message(recipient_id=get_config('TwitterAPI', 'preview_id'),
-                        text="https://twitter.com/" + get_config('TwitterAPI', 'account_name') + "/status/" + str(
-                            posted_tweet.id))
+twitter_handler.api.send_direct_message(recipient_id=get_config('TwitterAPI', 'preview_id'),
+                                        text="https://twitter.com/" + get_config('TwitterAPI', 'account_name') + "/status/" + str(
+    posted_tweet.id))
