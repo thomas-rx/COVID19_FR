@@ -7,7 +7,7 @@
 # Importation des librairies.
 import os
 import sys
-from modules.APIEngine import get_data, json
+from modules.APIEngine import GouvernementAPI, WorldometersAPI
 from modules.GraphEngine import make_world_graph, make_local_graph, save_data_graph, make_gueris_departements_map, \
     make_hospital_departements_map
 from modules.MathsEngine import percentage_calc, save_worldometers_data, save_gouv_data, calc_difference, \
@@ -39,14 +39,14 @@ else:
 
 # ----------------------------------#
 
-gouvData = get_data("GOUVERNEMENT")  # On récupère les données du gouvernement
+gouvData = GouvernementAPI.get_data()  # On récupère les données du gouvernement
 
 # ----------------------------------#
 
 if gouvData is not None:  # Si elles sont valides
     check_data_change()  # On vérifie quelles sont un minimum cohérentes
-    worldometersData = get_data(
-        "WORLDOMETERS")  # Si c'est bon, on récupère les données de Worldometers (je l'ai mis ici pour éviter de spam l'api et de se faire ban-ip)
+    worldometersData = WorldometersAPI.get_data()
+
 else:
     print(log_time() + "Aucune donnée pour aujourd'hui ! (Source: Gouvernement)\n")
     sys.exit()
@@ -90,7 +90,8 @@ first_tweet_form = str("‪La 🇫🇷 est confinée depuis:"
                        + "\n" + "#ConfinementJour" + get_days() + " | #COVID19")
 
 second_tweet_form = str(
-    "🛏 " + format_data(gouvData['casHopital']) + " hospitalisés" + " " + difference_data['casHopital']
+    "🛏 " + format_data(gouvData['casHopital']) +
+    " hospitalisés" + " " + difference_data['casHopital']
     + "\n" + "🏠 " + format_data(gouvData['casConfirmesEhpad']) + " cas confirmés en ESMS" + " " + difference_data[
         'casConfirmesEhpad']
     + "\n" + "🔬 " + format_data(worldometersData['totalTests']) + " dépistages"
