@@ -8,7 +8,7 @@
 import json
 import os
 import sys
-from modules.ConfigEngine import get_config
+from modules.ConfigEngine import BaseConfigEngine
 
 directory = os.path.join(os.path.dirname(__file__), '../')
 
@@ -151,8 +151,10 @@ def percentage_calc():
         cas_gueris = data['casGueris']
         total_cases = data['casConfirmes']
 
-        cas_gueris = str("[" + str(round((float(cas_gueris) / float(total_cases) * float(100)), 2)) + "%]")
-        total_deces = str("[" + str(round((float(total_deces) / float(total_cases) * float(100)), 2)) + "%]")
+        cas_gueris = str(
+            "[" + str(round((float(cas_gueris) / float(total_cases) * float(100)), 2)) + "%]")
+        total_deces = str(
+            "[" + str(round((float(total_deces) / float(total_cases) * float(100)), 2)) + "%]")
 
         percent_data = {
             'casGueris': cas_gueris,

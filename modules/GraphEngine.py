@@ -12,7 +12,7 @@ import cairosvg
 import matplotlib.image as image
 import matplotlib.cbook as cbook
 
-from modules.ConfigEngine import get_config
+from modules.ConfigEngine import BaseConfigEngine, TwitterAPIConfig
 import os
 import requests
 import json
@@ -25,7 +25,8 @@ import matplotlib
 matplotlib.matplotlib_fname()
 '/etc/matplotlibrc'
 matplotlib.use('Agg')
-
+twitter_conf = TwitterAPIConfig()
+config = BaseConfigEngine()
 directory = os.path.join(os.path.dirname(__file__), '../')
 current_time = datetime.datetime.now()
 
@@ -75,8 +76,8 @@ def make_local_graph():
     ax.get_yaxis().set_major_formatter(
         matplotlib.ticker.FuncFormatter(lambda x, p: format(int(x), ',')))
 
-    plt.ylabel(u'Twitter - @' + get_config('TwitterAPI',
-                                           'account_name') + '\n', style='italic', fontsize=8)
+    plt.ylabel(u'Twitter - @' + config.get_config('TwitterAPI',
+                                                  'account_name') + '\n', style='italic', fontsize=8)
     plt.xlabel(u'Jours à partir du confinement: Mardi 17 Mars 2020',
                fontsize=12, style='italic')
     plt.title(u'AVANCÉE DU COVID-19 EN FRANCE\n(' +
@@ -118,7 +119,7 @@ def make_world_graph():
         if worldometers_data[i]['country'] == 'USA':
             x = i
 
-    for i in range(x, x + int(get_config('GraphConfig', 'countryView'))):
+    for i in range(x, x + int(config.get_config('GraphConfig', 'countryView'))):
         if not worldometers_data[i]['country'] == 'France':
             try:
                 total_cases.update(
@@ -140,7 +141,7 @@ def make_world_graph():
                     {str(worldometers_data[i]['country']): 0})
 
         try:
-            if 0 <= i <= int(get_config('GraphConfig', 'countryView')):
+            if 0 <= i <= int(config.get_config('GraphConfig', 'countryView')):
                 total_cases.update({'France': cas_confirmes})
                 dead_cases.update({'France': total_deces})
                 recovered_cases.update({'France': cas_gueris})
@@ -151,8 +152,8 @@ def make_world_graph():
         total_cases.items(), key=lambda item: item[1], reverse=True)}
     countries = list(total_cases.keys())
 
-    for a in range(0, int(get_config('GraphConfig', 'countryView'))):
-        countries = [sub.replace(countries[a], get_config(
+    for a in range(0, int(config.get_config('GraphConfig', 'countryView'))):
+        countries = [sub.replace(countries[a], config.get_config(
             'TraductionGraph', countries[a])) for sub in countries]
 
     graph_labels = countries
@@ -178,8 +179,8 @@ def make_world_graph():
                        backgroundcolor='dimgray', color='white')
 
     # plt.legend(prop={'size': 15}, labelspacing=5)
-    plt.ylabel(u'Twitter - @' + get_config('TwitterAPI',
-                                           'account_name') + '\n', style='italic', fontsize=8)
+    plt.ylabel(u'Twitter - @' + twitter_conf.account_name +
+               '\n', style='italic', fontsize=8)
     ax.legend()
     ax.get_yaxis().set_major_formatter(
         matplotlib.ticker.FuncFormatter(lambda x, p: format(int(x), ',')))
@@ -243,9 +244,11 @@ def make_hospital_departements_map():
     fr_chart.title = '\nConcentration de la population hospitalisée en France\n[' + current_time.strftime(
         "%d") + u' Mai 2020]'
     fr_chart.add(today_date, data)
-    fr_chart.render_to_png(directory + 'data/departements_hospital_map.png', dpi=1000)
     fr_chart.render_to_png(
-        '/var/www/html/covid19/data/' + datetime.datetime.now().strftime("%d-%m-%Y") + 'departements_hospital_map.png',
+        directory + 'data/departements_hospital_map.png', dpi=1000)
+    fr_chart.render_to_png(
+        '/var/www/html/covid19/data/' + datetime.datetime.now().strftime("%d-%m-%Y") +
+        'departements_hospital_map.png',
         dpi=1000)
 
     return
@@ -288,16 +291,19 @@ def make_gueris_departements_map():
     except:
         pass
 
-    final_data = {key: today_data[key] - yesterday_data.get(key, 0) for key in today_data}
+    final_data = {key: today_data[key] -
+                  yesterday_data.get(key, 0) for key in today_data}
 
     custom_style = Style(background='#FFFFFF', label_font_size=5,
                          title_font_size=20, title_font_family='jsp',
                          colors=('#00b300', '#ccffcc'))  # COULEUR CLAIRE, COULEUR FONCÉE
 
     fr_chart = pygal.maps.fr.Departments(style=custom_style, show_legend=False)
-    fr_chart.title = '\nConcentration de nouveaux guéris en France\n[' + current_time.strftime("%d") + u' Mai 2020]'
+    fr_chart.title = '\nConcentration de nouveaux guéris en France\n[' + current_time.strftime(
+        "%d") + u' Mai 2020]'
     fr_chart.add(today_date, final_data)
-    fr_chart.render_to_png(directory + 'data/departements_gueris_map.png', dpi=1000)
+    fr_chart.render_to_png(
+        directory + 'data/departements_gueris_map.png', dpi=1000)
     fr_chart.render_to_png('/var/www/html/covid19/data/' + datetime.datetime.now().strftime(
         "%d-%m-%Y") + 'departements_gueris_map.png', dpi=1000)
 

@@ -6,7 +6,7 @@
 
 # Importation des librairies.
 from datetime import datetime
-from modules.ConfigEngine import get_config, get_config_boolean
+from modules.ConfigEngine import BaseConfigEngine
 
 
 def get_days():
@@ -18,19 +18,22 @@ def get_days():
 
 
 def check_time():
-    if get_config_boolean('System', 'checkTime'):
+    config = BaseConfigEngine()
+
+    if config.get_config_boolean('System', 'checkTime'):
         get_time_now = datetime.now().strftime("%H:%M")
 
         start_time = datetime.strptime(
-            get_config('System', 'startTime'), '%H:%M')
+            config.get_config('System', 'startTime'), '%H:%M')
         start_time = start_time.strftime('%H:%M')
 
-        end_time = datetime.strptime(get_config('System', 'endTime'), '%H:%M')
+        end_time = datetime.strptime(
+            config.get_config('System', 'endTime'), '%H:%M')
         end_time = end_time.strftime('%H:%M')
 
         return start_time < get_time_now < end_time
-    else:
-        return True
+
+    return True
 
 
 def log_time():
