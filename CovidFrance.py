@@ -14,9 +14,10 @@ from modules.MathsEngine import percentage_calc, save_worldometers_data, save_go
     check_data_change
 from modules.TwitterEngine import TwitterEngine
 from modules.TimeEngine import check_time, get_days, datetime, log_time
-from modules.ConfigEngine import get_config, get_config_boolean
+from modules.ConfigEngine import TwitterAPIConfig, BaseConfigEngine
 
-twitter_handler = TwitterEngine()
+twitter_conf = TwitterAPIConfig()
+twitter_handler = TwitterEngine(twitter_conf)
 
 # ----------------------------------#
 
@@ -26,8 +27,8 @@ if not check_time():  # On vérifie le créneau horaire si activé dans le fichi
 # ----------------------------------#
 try:
     if twitter_handler.is_there_a_last_tweet():  # On vérifie que le bot n'a pas déjà posté aujourd'hui
-        print(log_time() + "Un tweet posté avec l'application [" + get_config('TwitterAPI',
-                                                                              'app_name') + "] existe déjà pour aujourd'hui !")
+        print(log_time() + "Un tweet posté avec l'application [" +
+              twitter_conf.app_name + "] existe déjà pour aujourd'hui !")
         sys.exit()
 
     else:
@@ -145,6 +146,6 @@ twitter_handler.api.update_status(status=second_tweet_form, media_ids=media_twee
                                   retry_count=10, retry_delay=5, retry_errors={503})
 
 # On envoie le lien du tweet sur le compte privé du propriétaire
-twitter_handler.api.send_direct_message(recipient_id=get_config('TwitterAPI', 'preview_id'),
-                                        text="https://twitter.com/" + get_config('TwitterAPI', 'account_name') + "/status/" + str(
-    posted_tweet.id))
+twitter_handler.api.send_direct_message(recipient_id=twitter_conf.preview_id,
+                                        text="https://twitter.com/" + twitter_conf.account_name + "/status/" + str(
+                                            posted_tweet.id))
