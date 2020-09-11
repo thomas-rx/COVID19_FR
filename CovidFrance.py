@@ -7,46 +7,47 @@
 # Importation des librairies.
 import os
 import sys
-from modules.APIEngine import get_data, json
+from modules.APIEngine import GouvernementAPI, WorldometersAPI
 from modules.GraphEngine import make_world_graph, make_local_graph, save_data_graph, make_gueris_departements_map, \
     make_hospital_departements_map
 from modules.MathsEngine import percentage_calc, save_worldometers_data, save_gouv_data, calc_difference, \
     check_data_change
-from modules.TwitterEngine import twitter_auth, get_last_tweet
+from modules.TwitterEngine import TwitterEngine
 from modules.TimeEngine import check_time, get_days, datetime, log_time
-from modules.ConfigEngine import get_config, get_config_boolean
+from modules.ConfigEngine import TwitterAPIConfig, BaseConfigEngine
 
-api, auth = twitter_auth()  # API TWEEPY
+twitter_conf = TwitterAPIConfig()
+twitter_handler = TwitterEngine(twitter_conf)
 
 # ----------------------------------#
 
-if check_time():  # On vérifie le créneau horaire si activé dans le fichier config.ini
-    pass
-else:
+if not check_time():  # On vérifie le créneau horaire si activé dans le fichier config.ini
+    sys.exit()
+
+# ----------------------------------#
+try:
+    if twitter_handler.is_there_a_last_tweet():  # On vérifie que le bot n'a pas déjà posté aujourd'hui
+        print(log_time() + "Un tweet posté avec l'application [" +
+              twitter_conf.app_name + "] existe déjà pour aujourd'hui !")
+        sys.exit()
+
+    else:
+        print(log_time() + "Aucun tweet n'a été posté aujourd'hui, suite du programme...")
+
+except Exception as why:
+    print(log_time() + "Erreur : " + why)
     sys.exit()
 
 # ----------------------------------#
 
-if get_last_tweet() == 1:  # On vérifie que le bot n'a pas déjà posté aujourd'hui
-    print(log_time() + "Un tweet posté avec l'application [" + get_config('TwitterAPI',
-                                                                          'app_name') + "] existe déjà pour aujourd'hui !")
-    sys.exit()
-elif get_last_tweet() == 0:
-    print(log_time() + "Aucun tweet n'a été posté aujourd'hui, suite du programme...")
-else:
-    print(log_time() + "Erreur.")
-    sys.exit()
-
-# ----------------------------------#
-
-gouvData = get_data("GOUVERNEMENT")  # On récupère les données du gouvernement
+gouvData = GouvernementAPI.get_data()  # On récupère les données du gouvernement
 
 # ----------------------------------#
 
 if gouvData is not None:  # Si elles sont valides
     check_data_change()  # On vérifie quelles sont un minimum cohérentes
-    worldometersData = get_data(
-        "WORLDOMETERS")  # Si c'est bon, on récupère les données de Worldometers (je l'ai mis ici pour éviter de spam l'api et de se faire ban-ip)
+    worldometersData = WorldometersAPI.get_data()
+
 else:
     print(log_time() + "Aucune donnée pour aujourd'hui ! (Source: Gouvernement)\n")
     sys.exit()
@@ -90,7 +91,8 @@ first_tweet_form = str("‪La 🇫🇷 est confinée depuis:"
                        + "\n" + "#ConfinementJour" + get_days() + " | #COVID19")
 
 second_tweet_form = str(
-    "🛏 " + format_data(gouvData['casHopital']) + " hospitalisés" + " " + difference_data['casHopital']
+    "🛏 " + format_data(gouvData['casHopital']) +
+    " hospitalisés" + " " + difference_data['casHopital']
     + "\n" + "🏠 " + format_data(gouvData['casConfirmesEhpad']) + " cas confirmés en ESMS" + " " + difference_data[
         'casConfirmesEhpad']
     + "\n" + "🔬 " + format_data(worldometersData['totalTests']) + " dépistages"
@@ -132,17 +134,18 @@ print(log_time() + "Map des guéris générée !")
 img_packed = ('/root/COVID19-France/data/localGraph.png', '/root/COVID19-France/data/worldGraph.png',
               '/root/COVID19-France/data/departements_gueris_map.png',
               '/root/COVID19-France/data/departements_hospital_map.png')
-media_tweet = [api.media_upload(i).media_id_string for i in img_packed]
+media_tweet = [twitter_handler.api.media_upload(
+    i).media_id_string for i in img_packed]
 print(log_time() + "Préparation des images pour le tweet terminée !")
 
 # ----------------------------------#
 # On tweet
-posted_tweet = api.update_status(first_tweet_form)
+posted_tweet = twitter_handler.api.update_status(first_tweet_form)
 
-api.update_status(status=second_tweet_form, media_ids=media_tweet, in_reply_to_status_id=posted_tweet.id,
-                  retry_count=10, retry_delay=5, retry_errors={503})
+twitter_handler.api.update_status(status=second_tweet_form, media_ids=media_tweet, in_reply_to_status_id=posted_tweet.id,
+                                  retry_count=10, retry_delay=5, retry_errors={503})
 
 # On envoie le lien du tweet sur le compte privé du propriétaire
-api.send_direct_message(recipient_id=get_config('TwitterAPI', 'preview_id'),
-                        text="https://twitter.com/" + get_config('TwitterAPI', 'account_name') + "/status/" + str(
-                            posted_tweet.id))
+twitter_handler.api.send_direct_message(recipient_id=twitter_conf.preview_id,
+                                        text="https://twitter.com/" + twitter_conf.account_name + "/status/" + str(
+                                            posted_tweet.id))
