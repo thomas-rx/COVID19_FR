@@ -11,7 +11,6 @@ import datetime
 from modules.ConfigEngine import TwitterAPIConfig
 
 todayDate = datetime.datetime.now().strftime("%Y-%m-%d")  # Date du jour
-# todayDate = dateSelected = '2020-04-10'
 
 
 class TwitterEngine:
