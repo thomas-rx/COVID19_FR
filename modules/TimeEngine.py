@@ -37,4 +37,4 @@ def check_time():
 
 
 def log_time():
-    return "[" + datetime.now().strftime("%D %H:%M:%S") + "] "
+    return "[" + datetime.now().strftime("%H:%M:%S %d-%m-%y") + "] "
