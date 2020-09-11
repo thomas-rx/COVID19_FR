@@ -13,13 +13,17 @@ from modules.ConfigEngine import BaseConfigEngine
 directory = os.path.join(os.path.dirname(__file__), '../')
 
 
+def format_data(data):
+    return str("{0:,}".format(data))
+
+
 def put_sign(var):
     if var > 0:
-        return '+' + str(var)
+        return '+' + format_data(var)
     elif var == 0:
         return 'N/A'
     else:
-        return str(var)
+        return format_data(var)
 
 
 def check_data_change():
@@ -33,15 +37,13 @@ def check_data_change():
         cas_hopital = data['casHopital']
         cas_gueris = data['casGueris']
         cas_malades = data['casMalades']
-        cas_ehpad = data['casEhpad']
-        cas_confirmes_ehpad = data['casConfirmesEhpad']
 
     with open(directory + 'data/oldGouvData.json') as oldData:
         data = json.load(oldData)
         if data['casConfirmes'] != cas_confirmes:
             print("[INFO] Vérification: chiffres modifiés !")
         else:
-            print("[ATTENTION] Aucun changement n'a été détecté dans les chiffres.")
+            print("[INFO] Aucun changement n'a été détecté dans les chiffres.")
             sys.exit()
 
 
@@ -56,8 +58,6 @@ def calc_difference():
         cas_hopital = data['casHopital']
         cas_gueris = data['casGueris']
         cas_malades = data['casMalades']
-        cas_ehpad = data['casEhpad']
-        cas_confirmes_ehpad = data['casConfirmesEhpad']
 
     with open(directory + 'data/oldGouvData.json') as old_dataData:
         data = json.load(old_dataData)
@@ -69,8 +69,6 @@ def calc_difference():
         old_cas_hopital = data['casHopital']
         old_cas_gueris = data['casGueris']
         old_cas_malades = data['casMalades']
-        old_cas_ehpad = data['casEhpad']
-        old_cas_confirmes_ehpad = data['casConfirmesEhpad']
 
     with open(directory + 'data/todayWorldometersData.json') as today_data:
         data = json.load(today_data)
@@ -99,8 +97,6 @@ def calc_difference():
     diff_cas_hopital = cas_hopital - old_cas_hopital
     diff_cas_gueris = cas_gueris - old_cas_gueris
     diff_cas_malades = cas_malades - old_cas_malades
-    diff_cas_ehpad = cas_ehpad - old_cas_ehpad
-    diff_cas_confirmes_ehpad = cas_confirmes_ehpad - old_cas_confirmes_ehpad
 
     diff_active_cases = active - old_active
     diff_total_tests = totalTests - old_totalTests
@@ -117,19 +113,15 @@ def calc_difference():
     diff_active_cases = put_sign(diff_active_cases)
     diff_total_tests = put_sign(diff_total_tests)
     diff_today_cases = put_sign(diff_today_cases)
-    diff_cas_ehpad = put_sign(diff_cas_ehpad)
-    diff_cas_confirmes_ehpad = put_sign(diff_cas_confirmes_ehpad)
 
     diff_data = {
         'casConfirmes': diff_cas_confirmes,
-        'casEhpad': diff_cas_ehpad,
         'decesHopital': diff_deces_hopital,
         'decesEhpad': diff_deces_ehpad,
         'totalDeces': diff_total_deces,
         'casReanimation': diff_cas_reanimation,
         'casHopital': diff_cas_hopital,
         'casGueris': diff_cas_gueris,
-        'casConfirmesEhpad': diff_cas_confirmes_ehpad,
         'casMalades_GOUV': diff_cas_malades,
         'casMalades_WORLDOMETERS': diff_active_cases,
         'todayCases': diff_today_cases,
