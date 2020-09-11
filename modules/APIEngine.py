@@ -11,14 +11,14 @@ import datetime
 import os
 import abc
 
-from ConfigEngine import get_config
+from .ConfigEngine import BaseConfigEngine
 
 dateSelected = datetime.datetime.now().strftime(
     "%Y-%m-%d")  # Date du jour pour parse le JSON
 directory = os.path.join(os.path.dirname(__file__), '../')
 
 
-# dateSelected = '2020-04-29' #Permet de sélectionner une date 'manuellement'
+# dateSelected = '2020-09-10' #Permet de sélectionner une date 'manuellement'
 
 class DataRequester(abc.ABC):
     def __init__(self):
@@ -94,14 +94,6 @@ class GouvernementAPI(DataRequester):
                     cas_gueris = gouv_data[i]['gueris']
 
                 try:
-                    if int(get_config("CustomData", "casEhpad")) > 0:
-                        cas_ehpad = int(get_config("CustomData", "casEhpad"))
-                        print(
-                            "[ATTENTION] Chiffres 'casEhpad' modifiés manuellements")
-                except:
-                    cas_ehpad = gouv_data[i]['casEhpad']
-
-                try:
                     if int(get_config("CustomData", "casConfirmesEhpad")) > 0:
                         cas_confirmes_ehpad = int(get_config(
                             "CustomData", "casConfirmesEhpad"))
@@ -137,7 +129,6 @@ class GouvernementAPI(DataRequester):
                     'casHopital': cas_hopital,
                     'casGueris': cas_gueris,
                     'casMalades': cas_malades,
-                    'casEhpad': cas_ehpad,
                     'casConfirmesEhpad': cas_confirmes_ehpad
                 }
 
