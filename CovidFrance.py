@@ -118,7 +118,8 @@ print(log_time() + "Graphiques générés !")
 
 img_packed = ('/root/COVID19-France/data/localGraph.png',
               '/root/COVID19-France/data/worldGraph.png')
-media_tweet = [api.media_upload(i).media_id_string for i in img_packed]
+media_tweet = [twitter_handler.api.media_upload(
+    i).media_id_string for i in img_packed]
 print(log_time() + "Préparation des images pour le tweet terminée !")
 
 # ----------------------------------#
