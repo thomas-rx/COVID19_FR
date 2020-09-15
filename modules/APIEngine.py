@@ -10,15 +10,15 @@ import json
 import datetime
 import os
 import abc
-
-from .ConfigEngine import BaseConfigEngine
+from modules.ConfigEngine import BaseConfigEngine
 
 dateSelected = datetime.datetime.now().strftime(
     "%Y-%m-%d")  # Date du jour pour parse le JSON
 directory = os.path.join(os.path.dirname(__file__), '../')
+config = BaseConfigEngine()
 
 
-# dateSelected = '2020-09-10' #Permet de sélectionner une date 'manuellement'
+# dateSelected = '2020-09-13' #Permet de sélectionner une date 'manuellement'
 
 class DataRequester(abc.ABC):
     def __init__(self):
@@ -41,8 +41,8 @@ class GouvernementAPI(DataRequester):
         for i in range(line_count):
             if gouv_data[i]['sourceType'] == "ministere-sante" and gouv_data[i]['date'] == dateSelected:
                 try:
-                    if int(get_config("CustomData", "casConfirmes")) > 0:
-                        cas_confirmes = int(get_config(
+                    if int(config.get_config("CustomData", "casConfirmes")) > 0:
+                        cas_confirmes = int(config.get_config(
                             "CustomData", "casConfirmes"))
                         print(
                             "[ATTENTION] Chiffres 'casConfirmes' modifiés manuellements")
@@ -50,8 +50,8 @@ class GouvernementAPI(DataRequester):
                     cas_confirmes = gouv_data[i]['casConfirmes']
 
                 try:
-                    if int(get_config("CustomData", "decesHopital")) > 0:
-                        deces_hopital = int(get_config(
+                    if int(config.get_config("CustomData", "decesHopital")) > 0:
+                        deces_hopital = int(config.get_config(
                             "CustomData", "decesHopital"))
                         print(
                             "[ATTENTION] Chiffres 'decesHopital' modifiés manuellements")
@@ -59,8 +59,8 @@ class GouvernementAPI(DataRequester):
                     deces_hopital = gouv_data[i]['deces']
 
                 try:
-                    if int(get_config("CustomData", "decesEhpad")) > 0:
-                        deces_ehpad = int(get_config(
+                    if int(config.get_config("CustomData", "decesEhpad")) > 0:
+                        deces_ehpad = int(config.get_config(
                             "CustomData", "decesEhpad"))
                         print(
                             "[ATTENTION] Chiffres 'decesEhpad' modifiés manuellements")
@@ -68,8 +68,8 @@ class GouvernementAPI(DataRequester):
                     deces_ehpad = gouv_data[i]['decesEhpad']
 
                 try:
-                    if int(get_config("CustomData", "casReanimation")) > 0:
-                        cas_reanimation = int(get_config(
+                    if int(config.get_config("CustomData", "casReanimation")) > 0:
+                        cas_reanimation = int(config.get_config(
                             "CustomData", "casReanimation"))
                         print(
                             "[ATTENTION] Chiffres 'casReanimation' modifiés manuellements")
@@ -77,8 +77,8 @@ class GouvernementAPI(DataRequester):
                     cas_reanimation = gouv_data[i]['reanimation']
 
                 try:
-                    if int(get_config("CustomData", "casHopital")) > 0:
-                        cas_hopital = int(get_config(
+                    if int(config.get_config("CustomData", "casHopital")) > 0:
+                        cas_hopital = int(config.get_config(
                             "CustomData", "casHopital"))
                         print(
                             "[ATTENTION] Chiffres 'casHopital' modifiés manuellements")
@@ -86,16 +86,16 @@ class GouvernementAPI(DataRequester):
                     cas_hopital = gouv_data[i]['hospitalises']
 
                 try:
-                    if int(get_config("CustomData", "casGueris")) > 0:
-                        cas_gueris = int(get_config("CustomData", "casGueris"))
+                    if int(config.get_config("CustomData", "casGueris")) > 0:
+                        cas_gueris = int(config.get_config("CustomData", "casGueris"))
                         print(
                             "[ATTENTION] Chiffres 'casGueris' modifiés manuellements")
                 except:
                     cas_gueris = gouv_data[i]['gueris']
 
                 try:
-                    if int(get_config("CustomData", "casConfirmesEhpad")) > 0:
-                        cas_confirmes_ehpad = int(get_config(
+                    if int(config.get_config("CustomData", "casConfirmesEhpad")) > 0:
+                        cas_confirmes_ehpad = int(config.get_config(
                             "CustomData", "casConfirmesEhpad"))
                         print(
                             "[ATTENTION] Chiffres 'casConfirmesEhpad' modifiés manuellements")
@@ -103,8 +103,8 @@ class GouvernementAPI(DataRequester):
                     cas_confirmes_ehpad = gouv_data[i]['casConfirmesEhpad']
 
                 try:
-                    if int(get_config("CustomData", "totalDeces")) > 0:
-                        total_deces = int(get_config(
+                    if int(config.get_config("CustomData", "totalDeces")) > 0:
+                        total_deces = int(config.get_config(
                             "CustomData", "totalDeces"))
                         print(
                             "[ATTENTION] Chiffres 'totalDeces' modifiés manuellements")
@@ -112,8 +112,8 @@ class GouvernementAPI(DataRequester):
                     total_deces = deces_hopital + deces_ehpad
 
                 try:
-                    if int(get_config("CustomData", "casMalades")) > 0:
-                        cas_malades = int(get_config(
+                    if int(config.get_config("CustomData", "casMalades")) > 0:
+                        cas_malades = int(config.get_config(
                             "CustomData", "casMalades"))
                         print(
                             "[ATTENTION] Chiffres 'casMalades' modifiés manuellements")
