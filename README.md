@@ -1,214 +1,148 @@
-<h1 align="center">
-  <br>
-  <a href="www.xrths.fr"><img src="https://i.ibb.co/QPLPSNn/t-l-chargement-2.png)" alt="COVID-19 FRANCE" width="275"></a>
-  <br>
-  COVID-19 FRANCE TWITTER
-  <br>
-</h1>
-  
-<h4 align="center">Bot Twitter qui fournit les chiffres du COVID-19 pour la France. 
-<br>
-<a href="https://twitter.com/CovidFrance" target="_blank">@CovidFrance (+30K)</a></h4>
 
+[![Contributors][contributors-shield]][contributors-url]
+[![Forks][forks-shield]][forks-url]
+[![Stargazers][stars-shield]][stars-url]
+[![MIT License][license-shield]][license-url]
+
+
+
+<!-- PROJECT LOGO -->
+<br />
 <p align="center">
-  <a href="https://www.python.org/">
-    <img src="http://ForTheBadge.com/images/badges/made-with-python.svg" alt="tweepy">
+  <a href="https://github.com/xrths/COVID19_FR">
+    <img src="https://i.ibb.co/Xk9psjP/TWITTER-LOGO.png" alt="Logo" width="200" height="200">
   </a>
-</p>
 
-<div align="center">
+  <h2 align="center">COVID-19 France</h2>
+  <h5 align="center">Robot in use available on Twitter.</h5>
 
-  [![Tweepy](https://img.shields.io/badge/tweepy-3.8.0-blue.svg)](https://pypi.org/project/tweepy/)
-  [![Requests](https://img.shields.io/badge/requests-2.23.0-blue.svg)](https://pypi.org/project/requests/)
-  [![Matplotlib](https://img.shields.io/badge/matplotlib-2.2.5-blue.svg)](https://pypi.org/project/matplotlib/)
-  [![Numpy](https://img.shields.io/badge/numpy-1.16.6-blue.svg)](https://pypi.org/project/numpy/) 
-[ ![Cairosvg](https://img.shields.io/badge/cairosvg-2.4.2-blue.svg)](https://pypi.org/project/cairosvg/)
-[ ![Pygal](https://img.shields.io/badge/pygal-2.4.0-blue.svg)](https://pypi.org/project/pygal/)
-
-
-
-
-
-</div>
-    
-<p align="center">
-  <a href="#données">Données</a> |
-  <a href="#mise-en-service">Mise en service</a> |
-  <a href="#graphiques-générés-automatiquement">Graphiques</a> |
-  <a href="#remerciements">Remerciements</a> |
-  <a href="#licence">Licence</a> 
+  <p align="center">
+  <a href="https://twitter.com/CovidFrance"><strong>Voir sur Twitter »</strong></a>
   <br>
-  <a href="https://www.xrths.fr">Consultez mon portofolio !</a> 
+<br>
+<img src="https://img.shields.io/twitter/follow/CovidFrance?label=%40CovidFrance&style=for-the-badge" alt="Twitter account">
+    <br>
+    <br>
+          <img src="https://forthebadge.com/images/badges/made-with-python.svg" alt="Made with python">
+    <br />
+    <br />
+    <a href="https://github.com/xrths/COVID19_FR/issues">Rapporter une erreur ❌</a>
+    ·
+    <a href="https://twitter.com/messages/3400092689-1222609878889443329?recipient_id=3400092689&text=Bonjour%2C+j%27aimerai+proposer+une+nouvelle+fonctionnalit%C3%A9+pour+le+compte+Twitter+%40CovidFrance.+Je+m%27explique%3A++">Proposer une idée 🧠</a>
+  </p>
 </p>
 
-<p align="center">
-  <img src="https://i.ibb.co/M58RZFz/screely-1586216563483.png">
-</p>
+## À-Propos 🦠
 
-## Données
-Les données sont lues sur le GitHub de [opencovid19-fr](https://github.com/opencovid19-fr/data/blob/master/dist/chiffres-cles.json).
+<img src="https://img.shields.io/twitter/follow/Mediavenir?color=red&label=Mediavenir&style=for-the-badge" alt="Mediavenir Twitter account">
 
-**Exemple (15/04/2020)**
+Ce projet existait à la base pour améliorer mon niveau de programmation en Python. Grâce au compte Twitter [@Mediavenir](https://twitter.com/Mediavenir) il est devenu un réel outil et une source d'information pour le [COVID-19 en France](https://www.santepubliquefrance.fr/dossiers/coronavirus-covid-19/). 
 
-    {'decesEhpad': 5600, 'casEhpad': 39730, 'totalDeces': 15729, 'decesHopital': 10129, 'casGueris': 28805, 'casReanimation': 6730, 'casMalades': 59039, 'casConfirmes': 103573, 'casHopital': 32292}
+Les personnes qui ont [contribué](https://github.com/xrths/COVID19_FR/graphs/contributors) aux projets m'ont vraiment aidé à améliorer la qualité du code et la stabilité de ce programme.
 
-* **Cas totaux confirmés:** 'casConfirmes'
-* **Cas décédés en hopîtaux:** 'decesHopital'
-* **Cas décédés en ESMS:** 'decesEhpad'
-* **Cas totaux décédés:** 'totalDeces'
-* **Cas en réanimations:** 'casReanimation'
-* **Cas hospitalisés:** 'casHopital'
-* **Cas guéris:** 'casGueris'
-* **Cas toujours malades:** 'casMalades'
-* **Cas  confirmés en ESMS:** 'casEhpad'
----
+Merci à vous tous ! 
 
-Les données PEUVENT aussi êtres tirées de de Worldometers, l'API utilisée est [celle ci](https://coronavirus-19-api.herokuapp.com/countries/france).
+## Données disponibles (FR) 📑
 
+Les données sont fournies par le [Ministère de la Santé et des Solidarités](https://solidarites-sante.gouv.fr/).
+Le programme lit les données brutes sur ce [fichier JSON](https://github.com/opencovid19-fr/data/blob/master/dist/chiffres-cles.json).
+Merci à l'équipe derrière [opencovid19-fr](https://github.com/opencovid19-fr/data) pour ce travail immense.
 
-*CEPENDANT, je déconseille fortement l'utilisation de leurs données car elles sont fausses, ils interprètent mal les chiffres.*
+### Les données suivantes sont utilisées (officielles)  ✅:
+ - **casConfirmes** - *Nombre cumulé de cas de COVID-19 confirmés par un test positif.*
 
+- **decesHopital** - *Nombre cumulé de décès de patients hospitalisés pour COVID-19 depuis le 1er mars 2020.*
 
-**Exemple (08/04/2020)**
+- **decesEhpad** - *Nombre cumulé de décès en EHPAD et EMS (établissements médico-sociaux).*
+
+- **totalDeces** - *Cumul des décès.*
+
+- **casReanimation** - *Nombre de patients actuellement en réanimation ou soins intensifs.*
+
+- **casHopital** - *Nombre de patients actuellement hospitalisés pour COVID-19.*
+
+- **casGueris** - *Nombre cumulé de patients ayant été hospitalisés pour COVID-19 et de retour à domicile en raison de l’amélioration de leur état de santé.*
+
+- **casMalades (non officiel & représenté par le calcul suivant)**: *cas_confirmes -  (total_deces + cas_gueris)*
+
+- **casConfirmesEhpad** - *Nombre de cas confirmés par test PCR en EHPAD et EMS. Ce chiffre est inclus dans le nombre total de cas confirmés.*
+
+### Les données suivantes peuvent êtres aussi utilisées (Worldmeters, fortement déconseillé ❌):
+
+*Exemple:*
 
     {'country': 'France', 'cases': 112950, 'todayCases': 3881, 'deaths': 10869, 'todayDeaths': 541, 'recovered': 21254, 'active': 80827, 'critical': 7148, 'casesPerOneMillion': 1730, 'deathsPerOneMillion': 167, 'totalTests': 224254, 'testsPerOneMillion': 3436}
 
-## Mise en service
+## Fichier de configuration ⚙️
 
-**C'est assez simple, il est actuellement hébergé sur un serveur Debian 10 (Linux)**
+- **user_id** = Identifiant de compte Twitter du compte robot.
+- **preview_id** = Identifiant du compte Twitter du propriétaire.
+- **app_name** = Nom de l'application qui héberge le bot (Twitter Dev Panel).
+- **account_name** = @ du compte Twitter (robot).
+- **consumer_key, consumer_secret, access_token, access_token_secret** = Twitter Dev panel.
+- **checkTime** = Si oui, attend d'être dans l'intervalle horaire pour vérifier les données.
+- **startTime** = Début du créneau horaire.
+- **endTime** = Fin du créneau horaire.
+- **[customData]** = Permet d'insérer des données manuellement.
+- **countryView** = Nombre de pays à afficher sur le graphique mondial.
+- **[traductionGraph]** = Traduit le pays donné (EN).
+- **[traductionGraph]** = Traduit les mois de l'année (1 = Janvier, 12 = Décembre).
 
-```bash
-# Cloner ce dépôt
-$ git clone https://github.com/xrths/COVID19-France
+## Installation 🖥
+
+**1.** Récupérer des clefs pour l'API sur [Twitter Developer](https://developer.twitter.com/en).
+**2.** Cloner le dépot:
+```sh
+git clone https://github.com/xrths/COVID19_FR
 ```
-```bash
-# Accéder au dossier
-$ cd COVID19-France/
+**3.** Installer les dépendances:
+```sh
+pip3.8 install -r requirements.txt
 ```
 
-```bash
-# Installer les dépendances
-$ pip3 install -r requirements.txt
+**5.** Configurer avec le fichier de configuration.
+**6.** Exécuter le programme:
+```sh
+python3.8 CovidFrance.py
+```
+**7.** Automatiser le programme:
+```sh
+crontab -e 
+```
+```sh
+*/8 * * * * python3.8 /root/COVID19_FR/CovidFrance.py > /root/COVID19_FR/log.txt 2>&1
 ```
 
-```bash
-$ python3 CovidFrance.py
-```
+## Contribuer 🌍
 
-## Configuration [config.ini]
+Ce sont les contributions qui font de la communauté open source un endroit si extraordinaire pour apprendre, inspirer et créer. Toutes les contributions que vous apportez sont **appréciées**.
 
-    user_id  = 1222609878889443329
-    
-*Changer par l'ID Twitter du compte bot*
+1. Fork le projet
+2. Créez votre branche (`git checkout -b feature/AmazingFeature`)
+3. Commit vous changements (`git commit -m 'Add some AmazingFeature'`)
+4. Push à la branche (`git push origin feature/AmazingFeature`)
+5. Ouvrez une pull request.
 
-    preview_id  = 3400092689
- *Changer par l'ID Twitter du compte du propiétaire*
+## License ⚖️
+<img src="https://img.shields.io/github/license/xrths/COVID19_FR?color=red&style=for-the-badge" alt="MIT LICENSE">
 
-    app_name  =  #RestezChezVous
-*Changer par le nom que vous avez donné à l'application Twitter (sur le portail développeur)*
+Distribué sous une licence MIT. Regardez `LICENSE` pour avoir plus d'informations.
 
-    account_name  = CovidFrance
- *Changer par le nom du compte bot*
+## Contact 📧
+<img src="https://img.shields.io/twitter/follow/xrths?color=red&label=%40xrths&style=for-the-badge" alt="XRTHS Twitter Account">
 
-    consumer_key  = xxxxxxxxxxxxxxxxxxxxxxxxxxxx
-    consumer_secret  = xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-    access_token  = xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-    access_token_secret  = xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-*Remplacer par vos keys API Twitter (sur le portail développeur)*
+Thomas ROUX - [@xrths](https://twitter.com/xrthd) - thomas.roux@etu.iut-tlse3.fr
 
-    directory  = /root/COVID19-France/
- *Remplacer par le chemin d'accès exact ou se trouve le fichier CovidFrance.py (doit bien se finir par "/")*
-
-    checkTime  = False
-*Si True, le bot attendra d'être  dans la tranche horaire donnée pour fonctionner*
-
-    startTime  = 18:55
-    endTime  = 21:30
-*Tranche horaire à définir*
-
-    casConfirmes  =
-    decesHopital  =
-    decesEhpad  =
-    casReanimation  =
-    casHopital  =
-    casGueris  =
-    totalDeces  =
-    casMalades  =
-    casEhpad = 
-     
-*Permet de modifier les chiffres manuellements, laisser vide si vous ne souhaitez pas modifier.*
+Project Link: [https://github.com/xrths/COVID19_FR](https://github.com/your_username/repo_name)
 
 
-    casMalades  = 10000
-*Exemple de modification*
-
-    countryView  = 10
-*Nombre de pays à afficher sur le graphique mondial*
-
-    [TraductionGraph]
-    USA  = USA
-    Spain  = Espagne
-    Italy  = Italie
-    Germany  = Allemagne
-    UK  = UK
-    France  = France
-    Iran  = Iran
-    Turkey  = Turquie
-    Belgium  = Belgique
-    Russia  = Russie
-    Brazil  = Brésil
-    Canada  = Canada
-    Netherlands  = Pays-Bas
-    Switzerland  = Suisse
-    Portugal  = Portugal
-    India  = Inde
-
-*Traduction des pays pour le graphique mondial*
-
-**Rendre le programme automatique**
-Il suffit de créer une tâche CRON. Voici un exemple qui exécute le programme toutes les 8 minutes:
-
-    */8 * * * * python3 /root/COVID19-France/CovidFrance.py > /root/COVID19-France/log.txt 2>&1
-
-## Graphiques générés automatiquement
-<p align="center">
-  <img src="https://i.ibb.co/Zf1gwGN/screely-1586902076592.png">
-</p>
-
-*Explication du fichier "graphData.txt"*
-
-    |-|CAS TOTAUX CONFIRMES|HOSPITALISATIONS|REANIMATIONS|DECES|GUERIS
-    0,6633,0,0,148,0 
-    0,7730,2579,699,175,602
-    0,9134,3626,931,264,1000
-
-**N.B: Les "0" sont obligatoires à chaques début de ligne.** 
-
-<p align="center">
-  <img src="https://i.ibb.co/XC12cqk/screely-1588453510580.png">
-</p>
-
-*Les données proviennent de Worldometers directement avec une correction des chiffres pour la France.*
-
-<p align="center">
-  <img src="https://i.ibb.co/q9z8zW9/screely-1588453648164.png">
-</p>
-<p align="center">
-  <img src="https://i.ibb.co/bXnHB8S/screely-1588453729779.png">
-</p>
-
-*Ces données sont directement lues sur le JSON quotidient d'opencovid-fr.*
-## Remerciements
-
-Je tiens sincèrement à vous **remercier** si vous consultez ce repo ou même si vous avez suivis le compte, lorsque j'ai créé ce programme je ne pensais pas qu’autant de personnes me feraient **confiance** ! 
-
-Je tiens à remercier tout spécialement l'équipe de **[@Conflits_FR](https://twitter.com/Conflits_FR)** qui ont permis de faire ****connaître**** le compte très rapidement et donc de le rendre vraiment utile au grand **public** ! 
-
-## Licence
-Licence MIT - Contactez-moi si vous avez des questions à propos de ça.
-
-## Contactez-moi
-**Twitter - [@xrths](https://twitter.com/xrths)**
-
-## Support
-<a href="https://www.buymeacoffee.com/xrths" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/purple_img.png" alt="Buy Me A Coffee" style="height: 41px !important;width: 174px !important;box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;-webkit-box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;" ></a>
+<!-- MARKDOWN LINKS & IMAGES -->
+[contributors-shield]: https://img.shields.io/github/contributors/xrths/COVID19_FR?style=for-the-badge
+[contributors-url]: https://github.com/xrths/COVID19_FR/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/xrths/COVID19_FR?style=for-the-badge
+[forks-url]: https://github.com/xrths/COVID19_FR/network/members
+[stars-shield]: https://img.shields.io/github/stars/xrths/COVID19_FR?style=for-the-badge
+[stars-url]: https://github.com/xrths/COVID19_FR/stargazers
+[license-shield]: https://img.shields.io/github/license/xrths/COVID19_FR?style=for-the-badge
+[license-url]: https://github.com/xrths/COVID19_FR/blob/master/LICENSE
+[product-screenshot]: images/screenshot.png
