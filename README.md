@@ -90,22 +90,22 @@ Merci à l'équipe derrière [opencovid19-fr](https://github.com/opencovid19-fr/
 
 ## Installation 🖥
 
-**1.** Récupérer des clefs pour l'API sur [Twitter Developer](https://developer.twitter.com/en).
-**2.** Cloner le dépot:
+- **1.** Récupérer des clefs pour l'API sur [Twitter Developer](https://developer.twitter.com/en).
+- **2.** Cloner le dépot:
 ```sh
 git clone https://github.com/xrths/COVID19_FR
 ```
-**3.** Installer les dépendances:
+- **3.** Installer les dépendances:
 ```sh
 pip3.8 install -r requirements.txt
 ```
 
-**5.** Configurer avec le fichier de configuration.
-**6.** Exécuter le programme:
+- **5.** Configurer avec le fichier de configuration.
+- **6.** Exécuter le programme:
 ```sh
 python3.8 CovidFrance.py
 ```
-**7.** Automatiser le programme:
+- **7.** Automatiser le programme:
 ```sh
 crontab -e 
 ```
