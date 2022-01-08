@@ -14,7 +14,7 @@
   </a>
 
   <h2 align="center">COVID-19 France</h2>
-  <h5 align="center">Robot in use available on Twitter.</h5>
+  <h5 align="center">OUTDATED !</h5>
 
   <p align="center">
   <a href="https://twitter.com/CovidFrance"><strong>Voir sur Twitter »</strong></a>
